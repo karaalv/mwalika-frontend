@@ -1,12 +1,22 @@
 {
   "name": "mwalika-frontend",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -H 127.0.0.1",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint .",
+    "prepare": "husky",
+    "lint:fix": "eslint . --fix",
+    "lint-staged": "lint-staged",
+    "format": "prettier --write \"**/*.{ts,tsx,css}\""
+  },
+  "lint-staged": {
+    "*.{ts,tsx,css}": [
+      "npm run format",
+      "npm run lint:fix"
+    ]
   },
   "dependencies": {
     "next": "16.1.6",
@@ -19,6 +29,11 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.3.2",
+    "prettier": "^3.8.1",
     "typescript": "^5"
   }
 }

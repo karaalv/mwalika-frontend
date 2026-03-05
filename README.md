@@ -1,36 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Mwalika Frontend
 
-## Getting Started
+This repository contains the frontend for **Mwalika**, including
+the landing page, privacy page, and chat interface that allows
+users to interact with the Mwalika agent.
 
-First, run the development server:
+Mwalika helps citizens discover the right eCitizen service
+through simple conversation. Instead of navigating complex
+menus, users can describe what they need and be guided toward
+the appropriate government service.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Mwalika is an experimental civic technology project built
+during a national hackathon in Kenya. The goal is to explore
+how conversational AI can make public services easier to
+understand and access.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+![Mwalika Chat Interface](./docs/chat-preview.png)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Backend
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The frontend communicates with the Mwalika backend, which
+powers the AI agent and handles the conversational logic.
 
-## Learn More
+Backend repository:
 
-To learn more about Next.js, take a look at the following resources:
+[mwalika-agent](https://github.com/karaalv/mwalika-agent)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Disclaimer
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Mwalika is an independent project and is **not affiliated with
+the Government of Kenya or the eCitizen platform**.
 
-## Deploy on Vercel
+Information provided through the system is intended for
+guidance only. Users should verify service details through
+official government sources before submitting any applications.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This project is licensed under the Apache License 2.0.
+See the `LICENSE` file for details.

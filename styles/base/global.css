@@ -1,0 +1,53 @@
+/* --- Global Styles --- */
+
+/* --- Base page styles --- */
+
+html {
+    font-size: 10px;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: var(--font-main);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+}
+
+/* --- Link styles --- */
+
+a {
+    color: var(--text-secondary);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* --- Button --- */
+
+button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    min-height: 4.4rem;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* --- Focus --- */
+
+:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+}

@@ -1,0 +1,112 @@
+/* --- CSS Resets --- */
+
+/* --- Box sizing --- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* --- Default margin --- */
+
+* {
+    margin: 0;
+}
+
+/* --- Body defaults --- */
+
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- Media --- */
+
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+}
+
+/* --- Form elements --- */
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+/* --- Text elements --- */
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+}
+
+/* --- Heading spacing --- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.25;
+    font-weight: 600;
+}
+
+/* First heading in a block shouldn't push content down */
+
+h1:first-child,
+h2:first-child,
+h3:first-child,
+h4:first-child,
+h5:first-child,
+h6:first-child {
+    margin-top: 0;
+}
+
+/* --- Paragraph spacing --- */
+
+p {
+    margin-bottom: 1rem;
+}
+
+/* --- List spacing --- */
+
+ul,
+ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+/* --- Scroll behavior --- */
+
+html:focus-within {
+    scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+        scroll-behavior: auto;
+    }
+}
+
+/* --- Root stacking context --- */
+
+#root,
+#__next {
+    isolation: isolate;
+}

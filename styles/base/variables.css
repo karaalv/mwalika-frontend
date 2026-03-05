@@ -1,0 +1,43 @@
+/* --- CSS Variables --- */
+
+/* Import font */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    /* --- Fonts --- */
+
+    --font-main: 'Inter', sans-serif;
+
+    /* --- Layout --- */
+
+    --radius-button: 2.5rem;
+
+    /* --- Effects --- */
+
+    --blur-glass: blur(40px);
+
+    /* --- Text Colors --- */
+
+    --text-primary: #000000;
+    --text-secondary: #a0a0a0;
+
+    /* --- Backgrounds --- */
+
+    --bg-primary: #ffffff;
+    --bg-secondary: #f4f3f5;
+
+    /* --- Status Colors --- */
+
+    --color-error: #ff383c;
+    --color-warning: #ffcc00;
+    --color-success: #14b04c;
+
+    /* --- Accent / Brand --- */
+
+    --color-accent: #14b04c;
+
+    /* --- Surfaces --- */
+
+    --surface-glass: #d0d0d033;
+}

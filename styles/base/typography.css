@@ -1,0 +1,74 @@
+/* --- Typography --- */
+
+/* Base styles */
+
+.text-heading {
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.text-subheading {
+    font-weight: 600;
+    line-height: 1.15;
+}
+
+.text-subsubheading {
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.text-body-standout {
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.text-body {
+    font-weight: 500;
+    line-height: 1.5;
+}
+
+/* --- Mobile (default) --- */
+
+.text-heading {
+    font-size: 3.2rem;
+}
+
+.text-subheading {
+    font-size: 2.4rem;
+}
+
+.text-subsubheading {
+    font-size: 2rem;
+}
+
+.text-body-standout {
+    font-size: 1.8rem;
+}
+
+.text-body {
+    font-size: 1.4rem;
+}
+
+/* --- Desktop / tablet --- */
+
+@media (min-width: 768px) {
+    .text-heading {
+        font-size: 6.4rem;
+    }
+
+    .text-subheading {
+        font-size: 4.8rem;
+    }
+
+    .text-subsubheading {
+        font-size: 3.2rem;
+    }
+
+    .text-body-standout {
+        font-size: 2.4rem;
+    }
+
+    .text-body {
+        font-size: 1.6rem;
+    }
+}

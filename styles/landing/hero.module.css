@@ -3,6 +3,7 @@
 .hero {
     /* Background */
     background-image: url('/assets/hero.png');
+    background-color: #a0c5d980;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -40,7 +41,7 @@
 .description {
     max-width: 50ch;
     font-size: 1.8rem;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 3rem;
 }
 
@@ -56,7 +57,7 @@
     color: var(--text-alternative);
 }
 
-/* --- Desktop / tablet */
+/* --- Desktop / tablet --- */
 
 @media (min-width: 768px) {
     .hero {

@@ -1,0 +1,28 @@
+/* Landing Page: Purpose Section */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+}
+
+.itemsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+    align-items: center;
+    justify-content: center;
+}
+
+/* --- Desktop / tablet --- */
+
+@media (min-width: 768px) {
+    .container {
+        gap: 7.5rem;
+    }
+
+    .itemsContainer {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+}

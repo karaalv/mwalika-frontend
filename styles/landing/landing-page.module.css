@@ -1,0 +1,25 @@
+/* Landing Page: Main Wrapper */
+
+.container {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+}
+
+.paddingContainer {
+    padding: 0 2.5rem;
+}
+
+/* --- Desktop / tablet --- */
+
+@media (min-width: 768px) {
+    .container {
+        gap: 10rem;
+    }
+
+    .paddingContainer {
+        padding: 0 5rem;
+    }
+}

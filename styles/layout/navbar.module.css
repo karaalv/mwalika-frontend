@@ -15,9 +15,9 @@
 
     /* Text */
     font-family: var(--font-main);
-    font-weight: 400;
+    font-weight: 500;
     line-height: 1.5;
-    font-size: 1.6rem;
+    font-size: 1.7rem;
 
     /* Background */
     background-color: var(--surface-glass);

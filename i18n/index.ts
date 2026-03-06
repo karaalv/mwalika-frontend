@@ -7,17 +7,21 @@
 // English translations
 import { enNavbarTranslations } from './en/navbar';
 import { enHeroTranslations } from './en/hero';
+import { enPurposeTranslations } from './en/purpose';
 
 // Swahili translations
 import { swNavbarTranslations } from './sw/navbar';
 import { swHeroTranslations } from './sw/hero';
+import { swPurposeTranslations } from './sw/purpose';
 
 export const enDictionary: Record<string, string> = {
     ...enNavbarTranslations,
     ...enHeroTranslations,
+    ...enPurposeTranslations,
 };
 
 export const swDictionary: Record<string, string> = {
     ...swNavbarTranslations,
     ...swHeroTranslations,
+    ...swPurposeTranslations,
 };

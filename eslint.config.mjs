@@ -5,6 +5,7 @@ import prettierConfig from "eslint-config-prettier";
 import tsParser from "@typescript-eslint/parser";
 import js from "@eslint/js";
 import next from "@next/eslint-plugin-next";
+import globals from "globals";
 
 export default defineConfig([
     // Global ignores
@@ -32,7 +33,8 @@ export default defineConfig([
         project: ["./tsconfig.json"],
       },
       globals: {
-        process: "readonly",
+        ...globals.browser,
+        ...globals.node,
       },
     },
     rules: {

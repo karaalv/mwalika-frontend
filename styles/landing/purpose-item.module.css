@@ -35,10 +35,11 @@
     justify-content: center;
     padding: 1rem;
     border-radius: 10px;
+
     /* Background */
     background-color: var(--surface-glass);
-    backdrop-filter: blur(var(--blur-glass));
     -webkit-backdrop-filter: blur(var(--blur-glass));
+    backdrop-filter: blur(var(--blur-glass));
 }
 
 /* --- Desktop / tablet ---  */

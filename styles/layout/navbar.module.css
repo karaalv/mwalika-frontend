@@ -21,8 +21,8 @@
 
     /* Background */
     background-color: var(--surface-glass);
-    backdrop-filter: blur(var(--blur-glass));
     -webkit-backdrop-filter: blur(var(--blur-glass));
+    backdrop-filter: blur(var(--blur-glass));
 }
 
 .navbarOpen {

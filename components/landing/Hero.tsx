@@ -5,6 +5,7 @@
 
 // React
 import { useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 
 // Styles
 import styles from '@/styles/landing/hero.module.css';
@@ -23,11 +24,15 @@ export default function Hero() {
 
     // - State -
     const heroRef = useRef<HTMLElement>(null);
+    const router = useRouter();
 
     // Rendering callbacks
     const renderCTAButton = () => {
         return (
-            <button className={styles.cta}>
+            <button
+                className={styles.cta}
+                onClick={() => router.push('/chat')}
+            >
                 {t('hero.cta')}
             </button>
         );

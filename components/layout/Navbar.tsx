@@ -6,6 +6,7 @@
 
 // React
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 // Icons
 import { X, Menu } from 'lucide-react';
@@ -27,11 +28,24 @@ export default function Navbar() {
 
     // - State -
     const [isOpen, setIsOpen] = useState(false);
+    const router = useRouter();
+
+    // - Callback handlers -
+    const scrollToSection = (id: string) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+            if (isMobile) {
+                setIsOpen(false);
+            }
+        }
+    };
 
     // - Rendering callbacks -
     const renderAskMwalika = (color: 'green' | 'black') => {
         return (
             <button
+                onClick={() => router.push('/chat')}
                 className={styles.askMwalikaButton}
                 style={{
                     backgroundColor:
@@ -55,20 +69,22 @@ export default function Navbar() {
 
         return (
             <div className={styles.pageLinks}>
-                <a
-                    href="#"
+                <button
+                    onClick={() =>
+                        scrollToSection('purpose')
+                    }
                     style={{ color }}
                     className={styles.navbarPageLink}
                 >
                     {t('navbar.purpose')}
-                </a>
-                <a
-                    href="#"
+                </button>
+                <button
+                    onClick={() => router.push('/privacy')}
                     style={{ color }}
                     className={styles.navbarPageLink}
                 >
                     {t('navbar.privacy')}
-                </a>
+                </button>
             </div>
         );
     };

@@ -12,7 +12,7 @@ import React, {
 } from 'react';
 import { useMediaQuery } from 'react-responsive';
 
-enum NavbarTextColor {
+export enum NavbarTextColor {
     LIGHT = 'light',
     DARK = 'dark',
 }

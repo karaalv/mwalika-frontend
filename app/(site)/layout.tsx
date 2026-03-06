@@ -4,6 +4,7 @@
  * of the Mwalika application. It wraps the Navbar,
  * footer and any relevant components for these pages.
  */
+
 // React
 import React from 'react';
 

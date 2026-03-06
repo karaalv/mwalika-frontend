@@ -15,7 +15,7 @@
 
     /* --- Effects --- */
 
-    --blur-glass: blur(40px);
+    --blur-glass: 20px;
 
     /* --- Text Colors --- */
 
@@ -50,5 +50,5 @@
 
     /* --- Opacity ---- */
 
-    --hover-opacity: 0.8;
+    --hover-opacity: 0.9;
 }

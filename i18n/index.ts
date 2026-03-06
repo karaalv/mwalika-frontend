@@ -6,14 +6,18 @@
  */
 // English translations
 import { enNavbarTranslations } from './en/navbar';
+import { enHeroTranslations } from './en/hero';
 
 // Swahili translations
 import { swNavbarTranslations } from './sw/navbar';
+import { swHeroTranslations } from './sw/hero';
 
 export const enDictionary: Record<string, string> = {
     ...enNavbarTranslations,
+    ...enHeroTranslations,
 };
 
 export const swDictionary: Record<string, string> = {
     ...swNavbarTranslations,
+    ...swHeroTranslations,
 };

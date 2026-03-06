@@ -16,8 +16,12 @@ body {
     font-family: var(--font-main);
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    text-rendering: optimizeLegibility;
+    /* text-rendering: optimizeLegibility; */
     overflow-x: hidden;
+}
+
+main {
+    position: relative;
     z-index: var(--z-index-content);
 }
 

@@ -7,6 +7,7 @@
     top: 0;
     left: 0;
     width: 100%;
+    height: 5rem;
     z-index: var(--z-index-navbar);
     padding: 1rem;
     display: flex;
@@ -19,10 +20,9 @@
     font-size: 1.6rem;
 
     /* Background */
-    height: 5rem;
     background-color: var(--surface-glass);
-    backdrop-filter: var(--blur-glass);
-    -webkit-backdrop-filter: var(--blur-glass);
+    backdrop-filter: blur(var(--blur-glass));
+    -webkit-backdrop-filter: blur(var(--blur-glass));
 }
 
 .navbarOpen {
@@ -37,6 +37,7 @@
 .navbarRow {
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 100%;
     height: fit-content;
 }
@@ -60,6 +61,10 @@
     border-radius: var(--radius-button);
     font-weight: 500;
     color: var(--text-alternative);
+}
+
+.askMwalikaButton:hover {
+    opacity: var(--hover-opacity);
 }
 
 /* Page Links */
@@ -92,11 +97,10 @@
 /* Desktop Menu */
 
 .desktopMenu {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    place-items: center;
     width: 100%;
-    gap: 2rem;
 }
 
 /* Navbar text */

@@ -21,11 +21,13 @@
 
     --text-primary: #000000;
     --text-secondary: #a0a0a0;
+    --text-alternative: #ffffff;
 
     /* --- Backgrounds --- */
 
     --bg-primary: #ffffff;
     --bg-secondary: #f4f3f5;
+    --bg-hover: #e0e0e0;
 
     /* --- Status Colors --- */
 
@@ -40,4 +42,13 @@
     /* --- Surfaces --- */
 
     --surface-glass: #d0d0d033;
+
+    /* --- Z Index --- */
+
+    --z-index-navbar: 1000;
+    --z-index-content: 1;
+
+    /* --- Opacity ---- */
+
+    --hover-opacity: 0.8;
 }

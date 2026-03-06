@@ -7,6 +7,9 @@ import '@styles/base/variables.css';
 import '@styles/base/typography.css';
 import '@styles/base/global.css';
 
+// Context
+import LanguageProvider from '@/context/LanguageContext';
+
 export const metadata: Metadata = {
     title: 'Mwalika | Government Services, Explained Simply',
     description: `Discover the right eCitizen service through
@@ -21,7 +24,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <body>{children}</body>
+            <LanguageProvider>
+                <body>{children}</body>
+            </LanguageProvider>
         </html>
     );
 }

@@ -31,6 +31,9 @@ export default defineConfig([
         sourceType: "module",
         project: ["./tsconfig.json"],
       },
+      globals: {
+        process: "readonly",
+      },
     },
     rules: {
       // JS recommended (spread inline to avoid compat layer)

@@ -1,0 +1,107 @@
+/* Layout: Navbar Styles */
+
+/* Main container */
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: var(--z-index-navbar);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+
+    /* Text */
+    font-family: var(--font-main);
+    font-weight: 400;
+    line-height: 1.5;
+    font-size: 1.6rem;
+
+    /* Background */
+    height: 5rem;
+    background-color: var(--surface-glass);
+    backdrop-filter: var(--blur-glass);
+    -webkit-backdrop-filter: var(--blur-glass);
+}
+
+.navbarOpen {
+    background-color: var(--bg-secondary);
+    height: 100svh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Single row container */
+
+.navbarRow {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+}
+
+/* Icons */
+
+.iconContainer {
+    margin-left: auto;
+}
+
+.icon {
+    width: 2.4rem;
+    height: 2.4rem;
+}
+
+/* Buttons */
+
+.askMwalikaButton {
+    padding: 0.5rem 1.5rem;
+    width: fit-content;
+    border-radius: var(--radius-button);
+    font-weight: 500;
+    color: var(--text-alternative);
+}
+
+/* Page Links */
+
+.pageLinks {
+    display: flex;
+    align-items: center;
+    gap: 10rem;
+}
+
+/* Language */
+
+.languageSelector {
+    display: flex;
+    align-items: center;
+    gap: 2.5rem;
+}
+
+/* Mobile Menu */
+
+.mobileMenu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: 50%;
+}
+
+/* Desktop Menu */
+
+.desktopMenu {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    gap: 2rem;
+}
+
+/* Navbar text */
+
+.navbarPageLink:hover {
+    text-decoration: none;
+    opacity: var(--hover-opacity);
+}

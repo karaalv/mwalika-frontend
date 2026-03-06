@@ -1,0 +1,33 @@
+/* Privacy page */
+
+.container {
+    width: 100%;
+    padding: 7.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    line-height: 3rem;
+    font-size: 1.4rem;
+}
+
+/* --- Desktop / tablet --- */
+
+@media (min-width: 768px) {
+    .container {
+        padding: 10rem 5rem;
+        gap: 5rem;
+    }
+
+    .section {
+        font-size: 1.8rem;
+        line-height: 4rem;
+        gap: 3rem;
+        max-width: 70%;
+    }
+}

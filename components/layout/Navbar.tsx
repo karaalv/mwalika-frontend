@@ -6,7 +6,7 @@
 
 // React
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 
 // Icons
 import { X, Menu } from 'lucide-react';
@@ -29,6 +29,7 @@ export default function Navbar() {
     // - State -
     const [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
+    const pathname = usePathname();
 
     // - Callback handlers -
     const scrollToSection = (id: string) => {
@@ -70,9 +71,14 @@ export default function Navbar() {
         return (
             <div className={styles.pageLinks}>
                 <button
-                    onClick={() =>
-                        scrollToSection('purpose')
-                    }
+                    onClick={() => {
+                        if (pathname === '/') {
+                            scrollToSection('purpose');
+                            return;
+                        } else {
+                            router.push('/#purpose');
+                        }
+                    }}
                     style={{ color }}
                     className={styles.navbarPageLink}
                 >

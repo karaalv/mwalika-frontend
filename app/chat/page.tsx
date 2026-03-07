@@ -11,6 +11,7 @@ import { useState, useEffect } from 'react';
 import styles from '@styles/chat/chat-page.module.css';
 
 // Context
+import { useSiteLayout } from '@/context/LayoutContext';
 
 // Components
 import Sidebar from '@components/chat/Sidebar';
@@ -18,10 +19,12 @@ import ChatArea from '@components/chat/ChatArea';
 
 export default function ChatPage() {
     // - Context -
+    const { isMobile } = useSiteLayout();
 
     // - State -
+    // Open default on desktop, closed on mobile
     const [isSidebarOpen, setIsSidebarOpen] =
-        useState<boolean>(true);
+        useState<boolean>(!isMobile);
 
     // - Effects -
     // Update the document title
@@ -44,15 +47,9 @@ export default function ChatPage() {
             </div>
 
             <div className={styles.chatArea}>
-                <ChatArea />
-            </div>
-            <div
-                className={styles.testButton}
-                onClick={() =>
-                    setIsSidebarOpen(!isSidebarOpen)
-                }
-            >
-                Toggle Sidebar
+                <ChatArea
+                    setIsSidebarOpen={setIsSidebarOpen}
+                />
             </div>
         </div>
     );

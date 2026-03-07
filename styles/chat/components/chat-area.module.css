@@ -1,0 +1,48 @@
+/* Chat area styles */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+    overflow: visible;
+}
+
+.chatHeader {
+    flex: 0 0 auto;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 2.5rem;
+    color: var(--text-secondary);
+    border-bottom: 1px solid #a0a0a080;
+    padding: 0.5rem 1rem;
+}
+
+.chatContent {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    /* background-color: purple; */
+}
+
+.chatInput {
+    flex: 0 0 auto;
+    width: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.panelIcon {
+    display: block;
+    width: 2.4rem;
+    height: 2.4rem;
+}
+
+/* --- Desktop /tablet --- */
+
+@media (min-width: 768px) {
+    .panelIcon {
+        display: none;
+    }
+}

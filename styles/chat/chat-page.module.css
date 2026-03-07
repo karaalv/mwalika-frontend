@@ -10,7 +10,7 @@
 .chatArea {
     flex: 1;
     height: 100%;
-    padding: 2rem;
+    padding: 1.5rem;
     border-radius: var(--radius-main);
     min-width: 0;
     background-color: var(--surface-glass);
@@ -53,12 +53,6 @@
     opacity: 0;
     transform: translateX(-100%);
     pointer-events: none;
-}
-
-.testButton {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
 }
 
 /* --- Desktop / tablet --- */

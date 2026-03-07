@@ -12,6 +12,7 @@
     /* --- Layout --- */
 
     --radius-button: 2.5rem;
+    --radius-main: 2.5rem;
 
     /* --- Effects --- */
 
@@ -28,6 +29,7 @@
     --bg-primary: #ffffff;
     --bg-secondary: #f4f3f5;
     --bg-hover: #e0e0e0;
+    --bg-hover-50: #e0e0e080;
 
     /* --- Status Colors --- */
 
@@ -46,6 +48,7 @@
     /* --- Z Index --- */
 
     --z-index-navbar: 1000;
+    --z-index-chat-sidebar: 100;
     --z-index-content: 1;
 
     /* --- Opacity ---- */

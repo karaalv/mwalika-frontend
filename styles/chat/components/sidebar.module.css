@@ -1,0 +1,255 @@
+/* Chat sidebar */
+
+.container {
+    height: 100%;
+    min-height: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebarHeader {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+.sidebarBody {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    width: 100%;
+}
+
+.sidebarFooter {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3rem;
+    width: 100%;
+}
+
+.languageOptions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.circle {
+    width: 3px;
+    height: 3px;
+    background-color: var(--text-secondary);
+    border-radius: 100px;
+}
+
+.icon {
+    width: 2.4rem;
+    height: 2.4rem;
+    color: var(--text-primary);
+    flex-shrink: 0;
+}
+
+.toggleButton {
+    width: fit-content;
+    height: fit-content;
+    padding: 0.5rem;
+    border-radius: 100px;
+    cursor: pointer;
+}
+
+.toggleButton.open {
+    margin-left: auto;
+}
+
+.toggleButton.closed {
+    margin-left: auto;
+    /* margin-right: auto; */
+}
+
+.toggleButton:hover {
+    background-color: var(--bg-hover-50);
+}
+
+.newButton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2.5rem;
+    width: 100%;
+    height: fit-content;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-button);
+    font-size: 1.6rem;
+    cursor: pointer;
+    opacity: 0.75;
+}
+
+.plusIcon {
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--text-primary);
+    flex-shrink: 0;
+}
+
+.plusIconContainer {
+    width: fit-content;
+    height: fit-content;
+    padding: 0.5rem;
+    border-radius: 100px;
+    background-color: var(--text-alternative);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.newButton:hover {
+    opacity: 1;
+    background-color: var(--bg-hover-50);
+}
+
+.linkContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+    flex-shrink: 0;
+}
+
+.link {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2.5rem;
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-button);
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.link:hover {
+    background-color: var(--bg-hover-50);
+    text-decoration: none;
+}
+
+.aiIcon {
+    width: 2.4rem;
+    height: 2.4rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
+}
+
+.chatContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    width: 100%;
+    min-height: 0;
+    flex: 1;
+}
+
+.chatScrollContainer {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    scrollbar-color: var(--text-secondary) transparent;
+    scrollbar-width: thin;
+}
+
+.chatScrollContainer::-webkit-scrollbar {
+    width: 10px;
+}
+
+.chatScrollContainer::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chatScrollContainer::-webkit-scrollbar-thumb {
+    background-color: var(--text-secondary);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+}
+
+.chatHeader {
+    width: fit-content;
+    white-space: nowrap;
+    color: var(--text-secondary);
+}
+
+.chatItem {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.chatTitle {
+    color: var(--text-primary);
+}
+
+.chatItem:hover {
+    background-color: var(--bg-hover-50);
+}
+
+.sidebarItemOpen,
+.sidebarItemClose {
+    transition:
+        opacity 150ms ease,
+        transform 250ms ease,
+        max-width 100ms ease;
+    will-change: opacity, transform, max-width;
+}
+
+.sidebarItemOpen {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.sidebarItemClose {
+    opacity: 0;
+    max-width: 0;
+    transform: translateX(-10px);
+    pointer-events: none;
+}
+
+/* --- Desktop / tablet --- */
+
+@media (min-width: 768px) {
+    .sidebarItemOpen {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .sidebarItemClose {
+        opacity: 0;
+        max-width: 100%;
+        transform: translateX(-10px);
+        pointer-events: none;
+    }
+
+    .toggleButton.closed {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}

@@ -1,0 +1,104 @@
+/* Chat Page Styles */
+
+.container {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    padding: 1rem;
+}
+
+.chatArea {
+    flex: 1;
+    height: 100%;
+    padding: 2rem;
+    border-radius: var(--radius-main);
+    min-width: 0;
+    background-color: var(--surface-glass);
+    -webkit-backdrop-filter: blur(var(--blur-glass));
+    backdrop-filter: blur(var(--blur-glass));
+}
+
+.sidebar {
+    height: 100%;
+    padding: 2rem;
+    flex-shrink: 0;
+    color: var(--text-primary);
+    background-clip: padding-box;
+}
+
+.state {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: var(--z-index-chat-sidebar);
+    border-top-right-radius: var(--radius-main);
+    border-bottom-right-radius: var(--radius-main);
+    background-color: #efefef;
+    transition:
+        transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
+}
+
+.open {
+    opacity: 1;
+    display: block;
+    width: 30rem;
+    transform: translateX(0);
+    pointer-events: auto;
+}
+
+.closed {
+    opacity: 0;
+    transform: translateX(-100%);
+    pointer-events: none;
+}
+
+.testButton {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+/* --- Desktop / tablet --- */
+
+@media (min-width: 768px) {
+    .container {
+        display: flex;
+        padding: 2rem;
+        gap: 1rem;
+    }
+
+    .chatArea {
+        padding: 3rem;
+    }
+
+    .state {
+        position: relative;
+        border-radius: 2.5rem;
+        background: radial-gradient(
+            600px circle at top left,
+            #14b04c33 0%,
+            var(--surface-glass) 65%
+        );
+        transition:
+            width 0.3s ease,
+            padding 0.3s ease;
+        will-change: width, padding;
+    }
+
+    .open {
+        opacity: 1;
+        transform: none;
+    }
+
+    .closed {
+        opacity: 1;
+        display: flex;
+        width: 8rem;
+        padding: 1rem;
+        transform: none;
+        pointer-events: auto;
+    }
+}

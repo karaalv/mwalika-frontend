@@ -11,11 +11,11 @@ import { X } from 'lucide-react';
 import styles from '@styles/chat/components/error-modal.module.css';
 
 // Context
-import { useChat } from '@/context/ChatContext';
+import { useNotification } from '@/context/NotificationContext';
 
 export default function ErrorModal() {
     // - Context -
-    const { uiError, setUiError } = useChat();
+    const { uiError, setUiError } = useNotification();
     if (!uiError) return null;
 
     // - State -

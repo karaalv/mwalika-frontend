@@ -7,7 +7,6 @@
     height: 100%;
     width: 100%;
     color: var(--text-secondary);
-    /* background-color: red; */
 }
 
 .textContainer {
@@ -22,6 +21,6 @@
 @media (min-width: 768px) {
     .textContainer {
         gap: 5rem;
-        width: 50%;
+        width: 80%;
     }
 }

@@ -22,6 +22,7 @@ import AgentThinking from '@components/chat/AgentThinking';
 
 // Context
 import { useChat } from '@/context/ChatContext';
+import { useNotification } from '@/context/NotificationContext';
 import ChatMessages from './ChatMessages';
 
 // Component props
@@ -35,7 +36,8 @@ export default function ChatArea({
     setIsSidebarOpen,
 }: ChatAreaProps) {
     // - Context -
-    const { uiError, memories } = useChat();
+    const { activeMemory, activeSession } = useChat();
+    const { uiError } = useNotification();
 
     // - Render -
     const renderErrorModal = () => {
@@ -59,17 +61,19 @@ export default function ChatArea({
                         ${styles.chatTitle}
                     `}
                 >
-                    Chat Area
+                    {activeSession
+                        ? activeSession.chat_name
+                        : 'Mwalika'}
                 </span>
             </div>
             {/* Render error if present */}
             {uiError && renderErrorModal()}
             <div className={styles.chatContent}>
                 {/* Chat messages will go here */}
-                {memories.length === 0 ? (
+                {activeMemory.length === 0 ? (
                     <ChatPlaceholder />
                 ) : (
-                    <ChatMessages messages={memories} />
+                    <ChatMessages messages={activeMemory} />
                 )}
                 <AgentThinking />
             </div>

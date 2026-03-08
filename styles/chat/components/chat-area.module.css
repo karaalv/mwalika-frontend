@@ -36,6 +36,23 @@
     justify-content: flex-start;
     width: 100%;
     padding: 1rem 0;
+    scrollbar-color: var(--text-secondary) transparent;
+    scrollbar-width: thin;
+}
+
+.chatContent::-webkit-scrollbar {
+    width: 10px;
+}
+
+.chatContent::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.chatContent::-webkit-scrollbar-thumb {
+    background-color: var(--text-secondary);
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
 }
 
 .chatInput {

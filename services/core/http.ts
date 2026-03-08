@@ -17,7 +17,32 @@ import {
     SeverityLevel,
 } from '@/types/lib/observability/sentry/core.types';
 
+// Auth
+import { generateFrontendToken } from '@services/core/auth';
+
+// Cookies
+import { setCookieHeader } from '@services/core/cookies';
+
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
 // --- HTTP Client ---
+
+// Overloads
+export function httpAgent<T>(
+    endpoint: string,
+    method: HttpMethod,
+    parsed: true,
+    authToken?: string,
+    data?: unknown,
+): Promise<HttpApiResponse<T | null>>;
+
+export function httpAgent(
+    endpoint: string,
+    method: HttpMethod,
+    parsed: false,
+    authToken?: string,
+    data?: unknown,
+): Promise<Response>;
 
 /**
  * Abstraction function for performing
@@ -33,20 +58,21 @@ import {
  */
 export async function httpAgent<T>(
     endpoint: string,
-    method: 'GET' | 'POST' | 'PUT' | 'DELETE',
+    method: HttpMethod,
+    parsed: boolean = true,
     authToken?: string,
     data?: unknown,
-): Promise<HttpApiResponse<T | null>> {
+): Promise<HttpApiResponse<T | null> | Response> {
     try {
         const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}${endpoint}`;
         const cookieStore = await cookies();
-        // TODO: Handle token retrieval
 
         const options: RequestInit = {
             method,
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Bearer ${authToken}`,
+                'X-Mwalika': await generateFrontendToken(),
                 cookie: cookieStore.toString(),
             },
             credentials: 'include',
@@ -57,12 +83,25 @@ export async function httpAgent<T>(
         }
 
         const response = await fetch(url, options);
+
+        if (!parsed) {
+            return response;
+        }
+
         // Throw an error if
         // the response is empty
         if (!response) {
             throw new Error(
                 `No response from server for ${endpoint}`,
             );
+        }
+
+        // If cookies are in the response,
+        // set them in the cookie store
+        const cookieHeader =
+            response.headers.get('set-cookie');
+        if (cookieHeader) {
+            await setCookieHeader(cookieHeader);
         }
 
         // Return the JSON response
@@ -83,15 +122,20 @@ export async function httpAgent<T>(
             },
         };
         captureError(sentryEvent);
-        const errRes: HttpApiResponse<null> = {
-            data: null,
-            meta: {
-                request_id: '',
-                success: false,
-                message: (error as Error).message,
-                timestamp: new Date().toISOString(),
-            },
-        };
-        return errRes;
+        if (parsed) {
+            const errRes: HttpApiResponse<null> = {
+                data: null,
+                meta: {
+                    request_id: '',
+                    success: false,
+                    message: (error as Error).message,
+                    timestamp: new Date().toISOString(),
+                },
+            };
+            return errRes;
+        }
+        return new Response(JSON.stringify(error), {
+            status: 500,
+        });
     }
 }

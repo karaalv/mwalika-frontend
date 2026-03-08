@@ -23,6 +23,7 @@ import styles from '@styles/chat/components/sidebar.module.css';
 
 // Context
 import { useLanguage } from '@/context/LanguageContext';
+import { useChat } from '@/context/ChatContext';
 
 // Types
 import { Language } from '@/context/LanguageContext';
@@ -44,11 +45,11 @@ export default function Sidebar({
 }: SidebarProps) {
     // - Contexts -
     const { language, t, setLanguage } = useLanguage();
+    const { sessions } = useChat();
 
     // - State -
-    const chatTitles: string[] = Array.from(
-        { length: 100 },
-        (_, i) => `Chat ${i + 1}`,
+    const chatTitles: string[] = sessions.map(
+        (session) => session.chat_name,
     );
 
     // - Render -

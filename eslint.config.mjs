@@ -55,6 +55,7 @@ export default defineConfig([
       // Your overrides
       "@typescript-eslint/no-explicit-any": "off",
       "no-unused-vars": "off",
+      "no-redeclare": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {

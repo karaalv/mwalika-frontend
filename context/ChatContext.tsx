@@ -16,11 +16,7 @@ import React, {
 
 // Types
 import { AgentSession } from '@/types/services/agent/sessions.types';
-import {
-    AgentMemory,
-    MemoryContentTypes,
-} from '@/types/services/agent/memory.types';
-import { UiError } from '@/types/lib/errors/ui.types';
+import { AgentMemory } from '@/types/services/agent/memory.types';
 
 // Services
 import { fetchSessionMemory } from '@/services/agent/sessions';
@@ -36,11 +32,6 @@ interface ChatContextType {
     setAgentThinkingTitles: React.Dispatch<
         React.SetStateAction<string[]>
     >;
-    // Error state
-    uiError: UiError | null;
-    setUiError: React.Dispatch<
-        React.SetStateAction<UiError | null>
-    >;
     // Chat sessions
     sessions: AgentSession[];
     setSessions: React.Dispatch<
@@ -50,10 +41,7 @@ interface ChatContextType {
     newSession: () => void;
     setSession: (session: AgentSession) => void;
     // Memories for the active session
-    memories: AgentMemory[];
-    setMemories: React.Dispatch<
-        React.SetStateAction<AgentMemory[]>
-    >;
+    activeMemory: AgentMemory[];
 }
 
 const ChatContext = createContext<
@@ -70,22 +58,21 @@ export default function ChatProvider({
         useState<boolean>(false);
     const [agentThinkingTitles, setAgentThinkingTitles] =
         useState<string[]>([]);
-    const [uiError, setUiError] = useState<UiError | null>(
-        null,
-    );
     const [sessions, setSessions] = useState<
         AgentSession[]
     >([]);
     const [activeSession, setActiveSession] =
         useState<AgentSession | null>(null);
-    const [memories, setMemories] = useState<AgentMemory[]>(
-        _fetchTestMemory(),
-    );
 
-    // - Cache state -
-    const [sessionCache, setSessionCache] = useState<
+    // - Session storage state -
+    const [sessionStore, setSessionStore] = useState<
         Record<string, AgentMemory[]>
     >({});
+
+    // - Active memories in use -
+    const activeMemory = activeSession
+        ? sessionStore[activeSession.session_id] || []
+        : [];
 
     // - Callback functions -
 
@@ -93,7 +80,6 @@ export default function ChatProvider({
     // to start a new chat
     const newSession = () => {
         setActiveSession(null);
-        setMemories([]);
     };
 
     const setSession = async (session: AgentSession) => {
@@ -104,23 +90,23 @@ export default function ChatProvider({
             return;
         }
 
+        // Set active session
+        setActiveSession(session);
+
         // Check if the session is in cache
-        if (sessionCache[session.session_id]) {
-            setMemories(sessionCache[session.session_id]);
+        if (sessionStore[session.session_id]) {
+            return;
         } else {
             // If not in cache, clear memories and load from API
-            setMemories([]);
             const fetchedMemories =
                 await fetchSessionMemory(
                     session.session_id,
                 );
-            setMemories(fetchedMemories);
-            setSessionCache((prevCache) => ({
+            setSessionStore((prevCache) => ({
                 ...prevCache,
                 [session.session_id]: fetchedMemories,
             }));
         }
-        setActiveSession(session);
     };
 
     const value = useMemo(
@@ -129,22 +115,18 @@ export default function ChatProvider({
             setIsAgentThinking,
             agentThinkingTitles,
             setAgentThinkingTitles,
-            uiError,
-            setUiError,
             sessions,
             setSessions,
             activeSession,
             setSession,
             newSession,
-            memories,
-            setMemories,
+            activeMemory,
         }),
         [
             isAgentThinking,
-            uiError,
             sessions,
             activeSession,
-            memories,
+            activeMemory,
         ],
     );
 
@@ -165,45 +147,3 @@ export const useChat = () => {
     }
     return context;
 };
-
-function _fetchTestMemory(): AgentMemory[] {
-    return [
-        {
-            session_id: 'session1',
-            user_id: 'user1',
-            sender: 'user',
-            memory_id: 'memory1',
-            timestamp: new Date().toISOString(),
-            content: [
-                {
-                    type: MemoryContentTypes.TEXT,
-                    payload: 'Hello, how are you?',
-                },
-            ],
-        },
-        {
-            session_id: 'session1',
-            user_id: 'user1',
-            sender: 'agent',
-            memory_id: 'memory2',
-            timestamp: new Date().toISOString(),
-            content: [
-                {
-                    type: MemoryContentTypes.TEXT,
-                    payload:
-                        "I'm good, thank you! How can I assist you today?",
-                },
-                {
-                    type: MemoryContentTypes.LINK,
-                    payload:
-                        'https://react.dev/reference/react/useContext/ecitizen',
-                },
-                {
-                    type: MemoryContentTypes.IMAGE,
-                    payload:
-                        'https://demoadmin.ecitizen.pesaflow.com/assets/uploads/Agricultural-Development-Corporation-log.png',
-                },
-            ],
-        },
-    ];
-}

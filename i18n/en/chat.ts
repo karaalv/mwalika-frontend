@@ -18,4 +18,6 @@ export const enChatTranslations = {
     // Chat input
     'chat.chat_input.placeholder':
         'How can I help you today?',
+    // Agent thinking
+    'chat.agent_thinking': 'Thinking...',
 };

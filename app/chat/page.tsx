@@ -5,7 +5,7 @@
  * with the Mwalika chatbot to find government services.
  */
 // React
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 // Styles
 import styles from '@styles/chat/chat-page.module.css';
@@ -27,10 +27,8 @@ export default function ChatPage() {
         useState<boolean>(!isMobile);
 
     // - Effects -
-    // Update the document title
-    useEffect(() => {
-        document.title = 'Mwalika | Ask Mwalika';
-    }, []);
+    // TODO: Load chat sessions on mount
+
     return (
         <div className={styles.container}>
             <div

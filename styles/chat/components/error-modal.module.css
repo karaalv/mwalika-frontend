@@ -1,0 +1,45 @@
+/* Chat area: Error modal */
+
+.overlay {
+    background-color: var(--bg-primary);
+    padding: 1rem;
+    width: 30rem;
+    height: 20rem;
+    word-wrap: break-word;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.scrollContent {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.iconContainer {
+    padding: 0.5rem;
+    height: fit-content;
+    width: fit-content;
+    border-radius: 100%;
+    cursor: pointer;
+    margin-left: auto;
+}
+
+.iconContainer:hover {
+    background-color: var(--bg-hover);
+}
+
+.icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    .overlay {
+        width: 40rem;
+        height: 15rem;
+    }
+}

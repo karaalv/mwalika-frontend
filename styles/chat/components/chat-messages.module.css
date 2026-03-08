@@ -1,0 +1,129 @@
+/* Chat area: Chat messages */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    /* background-color: red; */
+    gap: 3rem;
+    padding: 1rem;
+}
+
+.message {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.userMessage {
+    padding: 1rem;
+    background-color: var(--bg-primary);
+    border-radius: 2rem;
+    width: fit-content;
+    margin-left: auto;
+    max-width: 90%;
+}
+
+.linkContainer {
+    border-radius: var(--radius-main);
+    width: fit-content;
+    max-width: 90%;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background-color: var(--surface-glass);
+    -webkit-backdrop-filter: blur(var(--blur-glass));
+    backdrop-filter: blur(var(--blur-glass));
+}
+
+.linkTitleContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    flex: 1;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+.linkTitle {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.linkImage {
+    width: 4rem;
+    height: 4rem;
+    object-fit: contain;
+    flex-shrink: 0;
+    border-radius: 0.5rem;
+}
+
+.imageWrapper {
+    position: relative;
+    width: 90%;
+    height: 20rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background-color: var(--bg-shimmer-secondary);
+}
+
+.imageContent {
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.shimmerImage {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    background: linear-gradient(
+        90deg,
+        var(--bg-shimmer-primary) 15%,
+        var(--bg-shimmer-secondary) 50%,
+        var(--bg-shimmer-primary) 85%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1s infinite ease-in-out alternate;
+}
+
+/* Keyframes for movement */
+@keyframes shimmer {
+    0% {
+        background-position: -500px 0;
+    }
+    100% {
+        background-position: 500px 0;
+    }
+}
+
+/* --- Desktop / tablet --- */
+
+@media (min-width: 768px) {
+    .container {
+        gap: 5rem;
+        padding: 2rem;
+    }
+
+    .userMessage {
+        padding: 1rem 2rem;
+        max-width: 50%;
+    }
+
+    .linkContainer {
+        gap: 2rem;
+    }
+
+    .linkImage {
+        width: 5rem;
+        height: 5rem;
+    }
+
+    .imageWrapper {
+        width: 50rem;
+        height: 25rem;
+    }
+}

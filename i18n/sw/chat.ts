@@ -17,4 +17,6 @@ export const swChatTranslations = {
         hali yako, ili uweze kuendelea kwa ujasiri.`,
     // Chat input
     'chat.chat_input.placeholder': 'Nikusaidieje leo?',
+    // Agent thinking
+    'chat.agent_thinking': 'Nafikiria...',
 };

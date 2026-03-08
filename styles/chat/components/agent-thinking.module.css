@@ -1,0 +1,54 @@
+/* Chat area: Agent thinking indicator */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    padding: 1rem;
+    gap: 1.5rem;
+    white-space: normal;
+    overflow-wrap: break-word;
+}
+
+.thinking {
+    font-weight: 600;
+    background: linear-gradient(
+        90deg,
+        var(--text-primary) 20%,
+        var(--text-secondary) 50%,
+        var(--text-primary) 80%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 5s infinite ease-in-out alternate;
+
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+/* Keyframes for movement */
+@keyframes shimmer {
+    0% {
+        background-position: -800px 0;
+    }
+    100% {
+        background-position: 800px 0;
+    }
+}
+
+.title {
+    color: var(--text-secondary);
+}
+
+/* --- Desktop /tablet --- */
+
+@media (min-width: 768px) {
+    .container {
+        padding: 2rem;
+    }
+
+    .thinking {
+        background-size: 100% 100%;
+        animation: shimmer 3s infinite ease-in-out alternate;
+    }
+}

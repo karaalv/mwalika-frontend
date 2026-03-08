@@ -27,6 +27,9 @@ import { useLanguage } from '@/context/LanguageContext';
 // Types
 import { Language } from '@/context/LanguageContext';
 
+// Constants
+import { MAX_AGENT_SESSIONS } from '@/services/agent/config';
+
 // Component props
 interface SidebarProps {
     isSidebarOpen: boolean;
@@ -175,7 +178,7 @@ export default function Sidebar({
                         ${!isSidebarOpen ? styles.sidebarItemClose : styles.sidebarItemOpen}
                     `}
                 >
-                    {`${t('chat.sidebar.chats')} (${chatTitles.length}/TODO:LIMIT)`}
+                    {`${t('chat.sidebar.chats')} (${chatTitles.length}/${MAX_AGENT_SESSIONS})`}
                 </span>
                 <div className={styles.chatScrollContainer}>
                     {chatTitles.map((title, index) => (

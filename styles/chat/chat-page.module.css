@@ -10,7 +10,7 @@
 .chatArea {
     flex: 1;
     height: 100%;
-    padding: 1.5rem;
+    padding: 1rem;
     border-radius: var(--radius-main);
     min-width: 0;
     background-color: var(--surface-glass);
@@ -60,12 +60,12 @@
 @media (min-width: 768px) {
     .container {
         display: flex;
-        padding: 2rem;
+        padding: 1rem;
         gap: 1rem;
     }
 
     .chatArea {
-        padding: 3rem;
+        padding: 2rem;
     }
 
     .state {

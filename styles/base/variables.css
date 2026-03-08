@@ -30,6 +30,8 @@
     --bg-secondary: #f4f3f5;
     --bg-hover: #e0e0e0;
     --bg-hover-50: #e0e0e080;
+    --bg-shimmer-primary: #cccccc80;
+    --bg-shimmer-secondary: #e6e6e680;
 
     /* --- Status Colors --- */
 
@@ -49,6 +51,7 @@
 
     --z-index-navbar: 1000;
     --z-index-chat-sidebar: 100;
+    --z-index-modal: 10;
     --z-index-content: 1;
 
     /* --- Opacity ---- */

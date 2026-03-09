@@ -9,6 +9,7 @@ export const swChatTranslations = {
     'chat.sidebar.new': 'Mpya',
     'chat.sidebar.chats': 'Mazungumzo',
     'chat.sidebar.links.privacy': 'Faragha',
+    'chat.sidebar.empty': 'Hakuna mazungumzo',
     // Chat area
     'chat.chat_area.placeholder.title': `Anza kwa kuelezea 
         huduma ya serikali unayohitaji.`,

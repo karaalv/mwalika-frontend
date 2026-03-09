@@ -45,7 +45,7 @@ export default function Sidebar({
 }: SidebarProps) {
     // - Contexts -
     const { language, t, setLanguage } = useLanguage();
-    const { sessions } = useChat();
+    const { sessions, isLoadingSessions } = useChat();
 
     // - State -
     const chatTitles: string[] = sessions.map(
@@ -169,7 +169,49 @@ export default function Sidebar({
         );
     };
 
-    const renderChatTitles = () => {
+    const renderEmptyState = () => {
+        return (
+            <span
+                className={`
+                    text-body 
+                    ${styles.emptyState}
+                    ${!isSidebarOpen ? styles.sidebarItemClose : styles.sidebarItemOpen}
+                `}
+            >
+                {t('chat.sidebar.empty')}
+            </span>
+        );
+    };
+
+    const renderLoadingState = () => {
+        return (
+            <div
+                className={`
+                    ${styles.loadingSkeleton} 
+                    ${!isSidebarOpen ? styles.sidebarItemClose : styles.sidebarItemOpen}
+                `}
+            />
+        );
+    };
+
+    const renderChatSessions = () => {
+        if (chatTitles.length === 0) {
+            return renderEmptyState();
+        }
+        return chatTitles.map((title, index) => (
+            <div
+                key={index}
+                className={`
+                ${styles.chatItem} 
+                ${!isSidebarOpen ? styles.sidebarItemClose : styles.sidebarItemOpen}
+            `}
+            >
+                <span className="text-body">{title}</span>
+            </div>
+        ));
+    };
+
+    const renderChatInfo = () => {
         return (
             <div className={styles.chatContainer}>
                 <span
@@ -182,19 +224,9 @@ export default function Sidebar({
                     {`${t('chat.sidebar.chats')} (${chatTitles.length}/${MAX_AGENT_SESSIONS})`}
                 </span>
                 <div className={styles.chatScrollContainer}>
-                    {chatTitles.map((title, index) => (
-                        <div
-                            key={index}
-                            className={`
-                                ${styles.chatItem} 
-                                ${!isSidebarOpen ? styles.sidebarItemClose : styles.sidebarItemOpen}
-                            `}
-                        >
-                            <span className="text-body">
-                                {title}
-                            </span>
-                        </div>
-                    ))}
+                    {isLoadingSessions
+                        ? renderLoadingState()
+                        : renderChatSessions()}
                 </div>
             </div>
         );
@@ -207,7 +239,7 @@ export default function Sidebar({
             </div>
             <div className={styles.sidebarBody}>
                 {renderNewButton()}
-                {renderChatTitles()}
+                {renderChatInfo()}
             </div>
             <div className={styles.sidebarFooter}>
                 {renderLinks()}

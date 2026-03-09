@@ -79,8 +79,11 @@ export default function SocketProvider({
 }) {
     // - Context -
     const { setUiError } = useNotification();
-    const { accessToken, claimUserCookieHandler } =
-        useAuth();
+    const {
+        accessToken,
+        authState,
+        claimUserCookieHandler,
+    } = useAuth();
     const {
         clearThinkingState,
         setAgentThinkingTitles,
@@ -285,8 +288,9 @@ export default function SocketProvider({
     // --- Connection ---
     useEffect(() => {
         // Only attempt to connect if
-        // we have an access token
-        if (!accessToken) {
+        // we have an access token and
+        // are authenticated
+        if (!accessToken || authState !== 'authenticated') {
             return;
         }
 
@@ -491,7 +495,7 @@ export default function SocketProvider({
             setSocketStatus('idle');
         };
     }, [
-        accessToken,
+        authState,
         startHeartbeat,
         clearHeartbeatInterval,
         captureErrorSetUi,

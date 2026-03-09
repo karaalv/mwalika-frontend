@@ -26,9 +26,6 @@ export default function ChatPage() {
     const [isSidebarOpen, setIsSidebarOpen] =
         useState<boolean>(!isMobile);
 
-    // - Effects -
-    // TODO: Load chat sessions on mount
-
     return (
         <div className={styles.container}>
             <div

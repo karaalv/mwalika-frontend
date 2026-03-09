@@ -13,10 +13,12 @@ import React, {
     useState,
     useMemo,
     useCallback,
+    useEffect,
 } from 'react';
 
 // Contexts
 import { useNotification } from '@/context/NotificationContext';
+import { useAuth } from '@/context/AuthContext';
 
 // Types
 import { AgentSession } from '@/types/services/agent/sessions.types';
@@ -27,6 +29,7 @@ import { StreamItem } from '@/types/services/agent/stream.types';
 import {
     fetchSessionMemory,
     fetchSessionById,
+    fetchSessions,
 } from '@/services/agent/sessions';
 
 // Mappers
@@ -57,6 +60,7 @@ interface ChatContextType {
     >;
     clearThinkingState: () => void;
     // Chat sessions
+    isLoadingSessions: boolean;
     sessions: AgentSession[];
     setSessions: React.Dispatch<
         React.SetStateAction<AgentSession[]>
@@ -83,12 +87,15 @@ export default function ChatProvider({
 }) {
     // - Context -
     const { setUiError } = useNotification();
+    const { authState } = useAuth();
 
     // - State management -
     const [isAgentThinking, setIsAgentThinking] =
         useState<boolean>(false);
     const [agentThinkingTitles, setAgentThinkingTitles] =
         useState<string[]>([]);
+    const [isLoadingSessions, setIsLoadingSessions] =
+        useState<boolean>(false);
     const [sessions, setSessions] = useState<
         AgentSession[]
     >([]);
@@ -260,6 +267,35 @@ export default function ChatProvider({
         [],
     );
 
+    // - Effects -
+    // On mount, we could load the
+    // user's sessions
+    useEffect(() => {
+        const loadSessions = async () => {
+            setIsLoadingSessions(true);
+            const fetchedSessions = await fetchSessions();
+            if (!fetchedSessions) {
+                setIsLoadingSessions(false);
+                setUiError({
+                    level: 'error',
+                    message:
+                        'Failed to load chat sessions.',
+                });
+                return;
+            }
+            setSessions(fetchedSessions);
+            setIsLoadingSessions(false);
+        };
+
+        if (authState === 'authenticated') {
+            loadSessions();
+        } else if (authState === 'unauthenticated') {
+            setSessions([]);
+            setActiveSession(null);
+            setSessionStore({});
+        }
+    }, [authState, setUiError]);
+
     // - Memoized context value -
 
     // - Active memories in use -
@@ -287,6 +323,7 @@ export default function ChatProvider({
             agentThinkingTitles,
             setAgentThinkingTitles,
             clearThinkingState,
+            isLoadingSessions,
             sessions,
             setSessions,
             activeSession,
@@ -298,6 +335,8 @@ export default function ChatProvider({
         }),
         [
             isAgentThinking,
+            agentThinkingTitles,
+            isLoadingSessions,
             sessions,
             activeSession,
             activeMemory,

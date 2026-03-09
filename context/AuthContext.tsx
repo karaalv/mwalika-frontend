@@ -26,6 +26,13 @@ import {
 // Contexts
 import { useNotification } from '@/context/NotificationContext';
 
+// --- Internal types ---
+
+type AuthState =
+    | 'pending'
+    | 'authenticated'
+    | 'unauthenticated';
+
 // --- Constants ---
 
 const REFRESH_THRESHOLD_MS = 60 * 1000; // 1 minute before expiry
@@ -34,6 +41,7 @@ const REFRESH_THRESHOLD_MS = 60 * 1000; // 1 minute before expiry
 
 interface AuthContextType {
     accessToken: string | null;
+    authState: AuthState;
     setAccessToken: React.Dispatch<
         React.SetStateAction<string | null>
     >;
@@ -60,6 +68,8 @@ export default function AuthProvider({
     const { setUiError } = useNotification();
 
     // - State -
+    const [authState, setAuthState] =
+        useState<AuthState>('pending');
     const [accessToken, setAccessToken] = useState<
         string | null
     >(null);
@@ -94,6 +104,7 @@ export default function AuthProvider({
             } else {
                 setAccessToken(null);
                 setAccessTokenExpiry(null);
+                setAuthState('unauthenticated');
                 setUiError({
                     level: 'error',
                     message:
@@ -163,6 +174,13 @@ export default function AuthProvider({
         (async () => {
             await ensureRefreshToken();
             await refreshAccessToken();
+
+            // Set auth state based on whether we got an access token
+            setAuthState(() =>
+                accessToken
+                    ? 'authenticated'
+                    : 'unauthenticated',
+            );
         })();
     }, [refreshAccessToken]);
 
@@ -184,11 +202,12 @@ export default function AuthProvider({
     const value = useMemo<AuthContextType>(
         () => ({
             accessToken,
+            authState,
             setAccessToken,
             setAccessTokenExpiry,
             claimUserCookieHandler,
         }),
-        [accessToken, claimUserCookieHandler],
+        [accessToken, authState, claimUserCookieHandler],
     );
     return (
         <AuthContext.Provider value={value}>

@@ -20,18 +20,31 @@ import React, {
 import {
     getAccessToken,
     ensureRefreshToken,
+    claimUserCookie,
 } from '@services/users/auth';
 
-// Types
+// Contexts
+import { useNotification } from '@/context/NotificationContext';
 
 // --- Constants ---
 
 const REFRESH_THRESHOLD_MS = 60 * 1000; // 1 minute before expiry
 
-// --- Context ---
+// --- Context interface ---
 
 interface AuthContextType {
     accessToken: string | null;
+    setAccessToken: React.Dispatch<
+        React.SetStateAction<string | null>
+    >;
+    setAccessTokenExpiry: React.Dispatch<
+        React.SetStateAction<number | null>
+    >;
+    claimUserCookieHandler: (
+        userId: string,
+        claimToken: string,
+        accessToken: string,
+    ) => Promise<void>;
 }
 
 const AuthContext = createContext<
@@ -43,6 +56,9 @@ export default function AuthProvider({
 }: {
     children: React.ReactNode;
 }) {
+    // - Context -
+    const { setUiError } = useNotification();
+
     // - State -
     const [accessToken, setAccessToken] = useState<
         string | null
@@ -78,6 +94,11 @@ export default function AuthProvider({
             } else {
                 setAccessToken(null);
                 setAccessTokenExpiry(null);
+                setUiError({
+                    level: 'error',
+                    message:
+                        'Failed to refresh access token.',
+                });
             }
         })();
         refreshAccessPromiseRef.current = refreshPromise;
@@ -112,6 +133,29 @@ export default function AuthProvider({
         refreshAccessToken,
     ]);
 
+    // Handler for claiming user cookie for anonymous users
+    const claimUserCookieHandler = useCallback(
+        async (
+            userId: string,
+            claimToken: string,
+            accessToken: string,
+        ) => {
+            const res = await claimUserCookie(
+                userId,
+                claimToken,
+                accessToken,
+            );
+
+            if (!res.meta.success) {
+                setUiError({
+                    level: 'error',
+                    message: 'Failed to claim user cookie.',
+                });
+            }
+        },
+        [setUiError],
+    );
+
     // - Effects -
     // On mount, ensure we have a refresh
     // token and get an access token
@@ -136,9 +180,15 @@ export default function AuthProvider({
         clearRefreshAccessTimeout,
     ]);
 
+    // - Memoized context value -
     const value = useMemo<AuthContextType>(
-        () => ({ accessToken }),
-        [accessToken],
+        () => ({
+            accessToken,
+            setAccessToken,
+            setAccessTokenExpiry,
+            claimUserCookieHandler,
+        }),
+        [accessToken, claimUserCookieHandler],
     );
     return (
         <AuthContext.Provider value={value}>

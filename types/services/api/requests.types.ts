@@ -4,12 +4,12 @@
  * various API endpoints and their expected request formats.
  */
 
-export enum WebsocketRequestType {
+export enum WebSocketRequestType {
     AGENT_INTERACTION = 'agent_interaction',
     HEARTBEAT = 'heartbeat',
 }
 
-export interface WebsocketRequest<T> {
-    type: WebsocketRequestType;
+export interface WebSocketRequest<T> {
+    type: WebSocketRequestType;
     payload: T;
 }

@@ -10,6 +10,7 @@ export enum MemoryContentTypes {
 }
 
 export interface MemoryContent {
+    content_id: string;
     type: MemoryContentTypes;
     payload: string;
 }

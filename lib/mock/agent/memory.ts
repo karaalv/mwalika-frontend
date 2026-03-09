@@ -22,6 +22,7 @@ function _mockGetMemory(): AgentMemory[] {
                 {
                     type: MemoryContentTypes.TEXT,
                     payload: 'Hello, how are you?',
+                    content_id: 'content1',
                 },
             ],
         },
@@ -36,16 +37,19 @@ function _mockGetMemory(): AgentMemory[] {
                     type: MemoryContentTypes.TEXT,
                     payload:
                         "I'm good, thank you! How can I assist you today?",
+                    content_id: 'content2',
                 },
                 {
                     type: MemoryContentTypes.LINK,
                     payload:
                         'https://react.dev/reference/react/useContext/ecitizen',
+                    content_id: 'content3',
                 },
                 {
                     type: MemoryContentTypes.IMAGE,
                     payload:
                         'https://demoadmin.ecitizen.pesaflow.com/assets/uploads/Agricultural-Development-Corporation-log.png',
+                    content_id: 'content4',
                 },
             ],
         },
@@ -60,16 +64,19 @@ function _mockGetMemory(): AgentMemory[] {
                     type: MemoryContentTypes.TEXT,
                     payload:
                         "I'm good, thank you! How can I assist you today?",
+                    content_id: 'content5',
                 },
                 {
                     type: MemoryContentTypes.LINK,
                     payload:
                         'https://react.dev/reference/react/useContext/ecitizen',
+                    content_id: 'content6',
                 },
                 {
                     type: MemoryContentTypes.IMAGE,
                     payload:
                         'https://demoadmin.ecitizen.pesaflow.com/assets/uploads/Agricultural-Development-Corporation-log.png',
+                    content_id: 'content7',
                 },
             ],
         },

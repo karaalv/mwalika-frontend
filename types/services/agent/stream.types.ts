@@ -13,6 +13,10 @@ export enum NdjsonTypes {
 export interface StreamItem {
     type: NdjsonTypes;
     payload: string;
+    user_id: string;
+    session_id: string;
     memory_id: string;
     sequence_number: number;
+    stream_id: string;
+    timestamp: string;
 }

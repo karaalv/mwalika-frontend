@@ -8,7 +8,10 @@ import React from 'react';
 import { Metadata } from 'next';
 
 // Context
+import NotificationProvider from '@/context/NotificationContext';
+import AuthProvider from '@/context/AuthContext';
 import ChatProvider from '@/context/ChatContext';
+import SocketProvider from '@/context/SocketContext';
 
 // Change title for chat page
 export const metadata: Metadata = {
@@ -24,5 +27,15 @@ export default function ChatLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    return <ChatProvider>{children}</ChatProvider>;
+    return (
+        <NotificationProvider>
+            <AuthProvider>
+                <ChatProvider>
+                    <SocketProvider>
+                        {children}
+                    </SocketProvider>
+                </ChatProvider>
+            </AuthProvider>
+        </NotificationProvider>
+    );
 }

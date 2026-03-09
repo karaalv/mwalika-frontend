@@ -76,13 +76,13 @@ export async function getAccessToken(): Promise<
  * @param userId The ID of the user to claim the cookie for
  * @param claimToken The token used to claim the cookie
  * @param authToken The current authentication token for the user
- * @returns HttpApiResponse with null data
+ * @returns HttpApiResponse containing the new access token
  */
 export async function claimUserCookie(
     userId: string,
     claimToken: string,
     authToken: string,
-): Promise<HttpApiResponse<null>> {
+): Promise<HttpApiResponse<TokenResponse | null>> {
     return await httpAgent(
         '/api/users/claim-cookie',
         'POST',

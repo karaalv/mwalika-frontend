@@ -3,6 +3,7 @@
  * the Mwalika application, providing structured types for
  * various API endpoints and their expected response formats.
  */
+import { StreamItem } from '@/types/services/agent/stream.types';
 
 export interface MetaData {
     request_id: string;
@@ -31,6 +32,12 @@ export enum WebSocketMessageType {
     WARNING = 'warning',
     ERROR = 'error',
 }
+
+export type WebSocketPayloadTypes =
+    | string
+    | StreamItem
+    | { [key: string]: any }
+    | null;
 
 export interface WebSocketMessage<T> {
     type: WebSocketMessageType;

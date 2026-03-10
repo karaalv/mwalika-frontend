@@ -14,7 +14,7 @@ import styles from '@styles/chat/chat-page.module.css';
 import { useSiteLayout } from '@/context/LayoutContext';
 
 // Components
-import Sidebar from '@components/chat/Sidebar';
+import Sidebar from '@components/chat/sidebar/Sidebar';
 import ChatArea from '@components/chat/ChatArea';
 
 export default function ChatPage() {
@@ -25,6 +25,8 @@ export default function ChatPage() {
     // Open default on desktop, closed on mobile
     const [isSidebarOpen, setIsSidebarOpen] =
         useState<boolean>(!isMobile);
+
+    // - Effects -
 
     return (
         <div className={styles.container}>

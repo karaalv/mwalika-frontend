@@ -64,7 +64,8 @@ type SocketStatus =
 interface SocketContextType {
     socketStatus: SocketStatus;
     sendMessage: (
-        message: WebSocketRequest<string>,
+        sessionId: string,
+        message: string,
     ) => void;
 }
 
@@ -80,14 +81,16 @@ export default function SocketProvider({
     // - Context -
     const { setUiError } = useNotification();
     const {
-        accessToken,
         authState,
+        getStateAccessToken,
         claimUserCookieHandler,
     } = useAuth();
     const {
+        setIsAgentThinking,
         clearThinkingState,
+        setIsAgentResponding,
         setAgentThinkingTitles,
-        fetchAndSetSessionById,
+        fetchAndAddSessionById,
         addAgentStreamItemToMemory,
     } = useChat();
 
@@ -156,11 +159,15 @@ export default function SocketProvider({
             wsRef.current &&
             wsRef.current.readyState === WebSocket.OPEN
         ) {
-            const heartbeatMessage: WebSocketRequest<string> =
-                {
-                    type: WebSocketRequestType.HEARTBEAT,
-                    payload: 'Heartbeat pong',
-                };
+            const heartbeatMessage: WebSocketRequest = {
+                type: WebSocketRequestType.HEARTBEAT,
+                payload: {
+                    message: 'Heartbeat pong',
+                    // Optionally include
+                    // session ID if needed
+                    session_id: '',
+                },
+            };
             wsRef.current.send(
                 JSON.stringify(heartbeatMessage),
             );
@@ -184,18 +191,40 @@ export default function SocketProvider({
 
     // Function to send messages through the WebSocket
     const sendMessage = useCallback(
-        (message: WebSocketRequest<string>) => {
+        (sessionId: string, message: string) => {
             if (
                 wsRef.current &&
                 wsRef.current.readyState === WebSocket.OPEN
             ) {
-                wsRef.current.send(JSON.stringify(message));
+                const messagePayload: WebSocketRequest = {
+                    type: WebSocketRequestType.AGENT_INTERACTION,
+                    payload: {
+                        message,
+                        session_id: sessionId,
+                    },
+                };
+                wsRef.current.send(
+                    JSON.stringify(messagePayload),
+                );
+                setIsAgentThinking(true);
             }
         },
         [],
     );
 
     // - Handlers for specific incoming message types -
+
+    const handleAgentStart = useCallback(() => {
+        // Clears thinking state to indicate
+        // agent has started processing and
+        // responding to the message
+        clearThinkingState();
+        setIsAgentResponding(true);
+    }, [clearThinkingState]);
+
+    const handleAgentEnd = useCallback(() => {
+        setIsAgentResponding(false);
+    }, []);
 
     const handleToolMessage = useCallback(
         (payload: any) => {
@@ -223,6 +252,15 @@ export default function SocketProvider({
 
     const handleSetUserId = useCallback(
         async (payload: any) => {
+            const accessToken = getStateAccessToken();
+            if (!accessToken) {
+                captureErrorSetUi(
+                    'No access token available for claiming user cookie',
+                    'Failed to claim user cookie due to missing access token.',
+                    SeverityLevel.ERROR,
+                );
+                return;
+            }
             if (
                 payload &&
                 typeof payload === 'object' &&
@@ -237,12 +275,12 @@ export default function SocketProvider({
                     await claimUserCookieHandler(
                         user_id,
                         claim_token,
-                        accessToken!,
+                        accessToken,
                     );
                 }
             }
         },
-        [claimUserCookieHandler, accessToken],
+        [claimUserCookieHandler, authState],
     );
 
     const handleSetSessionId = useCallback(
@@ -254,11 +292,13 @@ export default function SocketProvider({
             ) {
                 const { session_id } = payload;
                 if (typeof session_id === 'string') {
-                    fetchAndSetSessionById(session_id);
+                    await fetchAndAddSessionById(
+                        session_id,
+                    );
                 }
             }
         },
-        [fetchAndSetSessionById],
+        [fetchAndAddSessionById],
     );
 
     const handleAgentResponse = useCallback(
@@ -290,6 +330,7 @@ export default function SocketProvider({
         // Only attempt to connect if
         // we have an access token and
         // are authenticated
+        const accessToken = getStateAccessToken();
         if (!accessToken || authState !== 'authenticated') {
             return;
         }
@@ -349,10 +390,13 @@ export default function SocketProvider({
                     setSocketStatus('closed');
 
                     if (!event.wasClean) {
+                        const reason =
+                            event.reason ||
+                            'Unknown reason';
                         const sentryMessage = `WebSocket closed 
-                            unexpectedly: ${event.reason}`;
+                            unexpectedly: ${reason}`;
                         const uiMessage = `WebSocket connection closed 
-                            for the following reason: ${event.reason}`;
+                            for the following reason: ${reason}`;
                         captureErrorSetUi(
                             sentryMessage,
                             uiMessage,
@@ -360,7 +404,7 @@ export default function SocketProvider({
                             undefined,
                             {
                                 code: event.code,
-                                reason: event.reason,
+                                reason: reason,
                             },
                         );
                     }
@@ -397,7 +441,12 @@ export default function SocketProvider({
                                 // Clears thinking state to indicate
                                 // agent has started processing and
                                 // responding to the message
-                                clearThinkingState();
+                                handleAgentStart();
+                                break;
+                            case WebSocketMessageType.AGENT_END:
+                                // Sets responding state to false to indicate
+                                // agent has finished responding to the message
+                                handleAgentEnd();
                                 break;
                             case WebSocketMessageType.AGENT_RESPONSE:
                                 // Handles incoming agent responses to update

@@ -45,6 +45,7 @@ interface AuthContextType {
     setAccessToken: React.Dispatch<
         React.SetStateAction<string | null>
     >;
+    getStateAccessToken: () => string | null;
     setAccessTokenExpiry: React.Dispatch<
         React.SetStateAction<number | null>
     >;
@@ -73,6 +74,7 @@ export default function AuthProvider({
     const [accessToken, setAccessToken] = useState<
         string | null
     >(null);
+    const accessTokenRef = useRef<string | null>(null);
     const [accessTokenExpiry, setAccessTokenExpiry] =
         useState<number | null>(null); // Store expiry time in ms
     const refreshAccessTimeoutRef = useRef<ReturnType<
@@ -82,6 +84,12 @@ export default function AuthProvider({
         useRef<Promise<void> | null>(null);
 
     // - Callbacks -
+    const getStateAccessToken = useCallback(():
+        | string
+        | null => {
+        return accessTokenRef.current;
+    }, []);
+
     const clearRefreshAccessTimeout = useCallback(() => {
         if (refreshAccessTimeoutRef.current) {
             clearTimeout(refreshAccessTimeoutRef.current);
@@ -95,16 +103,20 @@ export default function AuthProvider({
         }
         // IIFE PROMISE to refresh the access token
         const refreshPromise = (async () => {
-            const res = await getAccessToken();
-            if (res.meta.success && res.data) {
-                setAccessToken(res.data.access_token);
+            const tokenResponse = await getAccessToken();
+            if (tokenResponse) {
+                setAccessToken(tokenResponse.access_token);
                 setAccessTokenExpiry(
-                    res.data.expires_at_ms,
+                    tokenResponse.expires_at_ms,
                 );
+                setAuthState('authenticated');
+                accessTokenRef.current =
+                    tokenResponse.access_token;
             } else {
                 setAccessToken(null);
                 setAccessTokenExpiry(null);
                 setAuthState('unauthenticated');
+                accessTokenRef.current = null;
                 setUiError({
                     level: 'error',
                     message:
@@ -151,13 +163,21 @@ export default function AuthProvider({
             claimToken: string,
             accessToken: string,
         ) => {
-            const res = await claimUserCookie(
+            const tokenResponse = await claimUserCookie(
                 userId,
                 claimToken,
                 accessToken,
             );
 
-            if (!res.meta.success) {
+            // Update access token and expiry
+            // on successful claim
+            if (tokenResponse) {
+                setAccessToken(tokenResponse.access_token);
+                setAccessTokenExpiry(
+                    tokenResponse.expires_at_ms,
+                );
+                setAuthState('authenticated');
+            } else {
                 setUiError({
                     level: 'error',
                     message: 'Failed to claim user cookie.',
@@ -174,13 +194,6 @@ export default function AuthProvider({
         (async () => {
             await ensureRefreshToken();
             await refreshAccessToken();
-
-            // Set auth state based on whether we got an access token
-            setAuthState(() =>
-                accessToken
-                    ? 'authenticated'
-                    : 'unauthenticated',
-            );
         })();
     }, [refreshAccessToken]);
 
@@ -202,6 +215,7 @@ export default function AuthProvider({
     const value = useMemo<AuthContextType>(
         () => ({
             accessToken,
+            getStateAccessToken,
             authState,
             setAccessToken,
             setAccessTokenExpiry,

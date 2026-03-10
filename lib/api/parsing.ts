@@ -27,9 +27,9 @@ interface CookieOptions {
  * @param rawSetCookie
  * @returns Array of individual cookie strings
  */
-export function splitSetCookie(
+export async function splitSetCookie(
     rawSetCookie: string | null,
-): string[] {
+): Promise<string[]> {
     if (!rawSetCookie) return [];
     return rawSetCookie.split(/,(?=\s*[^;=]+=[^;]+)/);
 }
@@ -40,11 +40,11 @@ export function splitSetCookie(
  * @param raw Set-Cookie header string
  * @returns Parsed cookie object
  */
-export function parseSetCookie(raw: string): {
+export async function parseSetCookie(raw: string): Promise<{
     name: string;
     value: string;
     options: CookieOptions;
-} {
+}> {
     const parts = raw.split(';').map((s) => s.trim());
     const nv = parts.shift() || '';
     const i = nv.indexOf('=');

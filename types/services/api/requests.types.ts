@@ -9,7 +9,12 @@ export enum WebSocketRequestType {
     HEARTBEAT = 'heartbeat',
 }
 
-export interface WebSocketRequest<T> {
+export interface WebSocketRequestPayload {
+    session_id: string;
+    message: string;
+}
+
+export interface WebSocketRequest {
     type: WebSocketRequestType;
-    payload: T;
+    payload: WebSocketRequestPayload;
 }

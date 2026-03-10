@@ -20,9 +20,6 @@ export default function AgentThinking() {
         useChat();
     const { t } = useLanguage();
 
-    // Safe guard: Only render if agent is thinking
-    if (!isAgentThinking) return null;
-
     // - State -
     const [currentTitle, setCurrentTitle] =
         useState<string>('');
@@ -47,7 +44,10 @@ export default function AgentThinking() {
         }, 4000);
 
         return () => clearInterval(interval);
-    }, [agentThinkingTitles]);
+    }, [agentThinkingTitles, isAgentThinking]);
+
+    // Safe guard: Only render if agent is thinking
+    if (!isAgentThinking) return null;
 
     return (
         <div className={styles.container}>

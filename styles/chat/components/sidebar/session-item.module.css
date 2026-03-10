@@ -1,0 +1,103 @@
+/* Chat page: Sidebar session item */
+
+/* - Main component - */
+
+.container {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    border-radius: 1rem;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.containerOptionsOpen {
+    z-index: var(--z-index-chat-sidebar-options);
+}
+
+.container:hover {
+    background-color: var(--bg-hover-50);
+}
+
+.chatItem {
+    flex: 1;
+    border-radius: 0.5rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    background-color: transparent;
+    border: none;
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.ellipsisIcon {
+    height: 2rem;
+    width: 2rem;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+/* - Options Menu - */
+
+/* 
+    Note the options menu is absolutely 
+    positioned based on the session item container
+*/
+.optionsMenu {
+    z-index: var(--z-index-chat-sidebar-options);
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border-radius: 1rem;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    font-size: 1.6rem;
+}
+
+.optionsButton {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}
+
+.optionsButton:hover {
+    background-color: var(--bg-hover-50);
+}
+
+.optionsIcon {
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+}
+
+.deleteOption {
+    color: var(--color-error);
+    font-weight: 600;
+}
+
+.deleteOption:hover {
+    background-color: #ff383c33;
+}
+
+/* --- Desktop / tablet --- */
+
+@media (min-width: 768px) {
+    .optionsMenu {
+        padding: 2rem;
+    }
+}

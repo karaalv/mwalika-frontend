@@ -10,6 +10,8 @@ export const enChatTranslations = {
     'chat.sidebar.chats': 'Chats',
     'chat.sidebar.links.privacy': 'Privacy',
     'chat.sidebar.empty': 'No chats available',
+    'chat.sidebar.session_options.rename': 'Rename',
+    'chat.sidebar.session_options.delete': 'Delete',
     // Chat area
     'chat.chat_area.placeholder.title': `Start by describing 
         the government service you need.`,

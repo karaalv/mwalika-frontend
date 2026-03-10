@@ -1,9 +1,9 @@
-'use client';
+'use server';
 /**
- * @description: This file contains the sentry client
- * used in client components to capture errors and send them to
- * Sentry with appropriate tags and extras for better error monitoring
- * and debugging.
+ * @description: This file contains the server-side
+ * Sentry client used in server components and API routes
+ * to capture errors and send them to Sentry with appropriate
+ * tags and extras for better error monitoring and debugging.
  */
 
 import * as Sentry from '@sentry/nextjs';
@@ -58,13 +58,11 @@ function sanitizeExtras(
     for (const key in extras) {
         sanitizedExtras[key] =
             typeof extras[key] === 'string'
-                ? scrub(extras[key])
+                ? (scrub(extras[key]) as string)
                 : extras[key];
     }
     return sanitizedExtras;
 }
-
-// --- Main Client Function ---
 
 /**
  * Captures an error event and sends it to Sentry with
@@ -72,7 +70,7 @@ function sanitizeExtras(
  *
  * @param event The Sentry event to capture
  */
-export function captureError(event: SentryEvent) {
+export async function captureError(event: SentryEvent) {
     const tags = sanitizeTags(event.tags || {});
     const extras = sanitizeExtras(event.extras || {});
 

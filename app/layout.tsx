@@ -25,11 +25,13 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
-            <LanguageProvider>
-                <SiteLayoutProvider>
-                    <body>{children}</body>
-                </SiteLayoutProvider>
-            </LanguageProvider>
+            <body>
+                <LanguageProvider>
+                    <SiteLayoutProvider>
+                        {children}
+                    </SiteLayoutProvider>
+                </LanguageProvider>
+            </body>
         </html>
     );
 }

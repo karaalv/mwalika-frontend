@@ -6,10 +6,15 @@
  */
 
 // React
-import React from 'react';
+import React, {
+    useRef,
+    useEffect,
+    useLayoutEffect,
+    useState,
+} from 'react';
 
 // Icons
-import { PanelLeft } from 'lucide-react';
+import { PanelLeft, ArrowDown } from 'lucide-react';
 
 // Styles
 import styles from '@styles/chat/components/chat-area.module.css';
@@ -39,6 +44,36 @@ export default function ChatArea({
     const { activeMemory, activeSession } = useChat();
     const { uiError } = useNotification();
 
+    // - State -
+    const chatContentRef = useRef<HTMLDivElement>(null);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const shouldAutoScrollRef = useRef<boolean>(true);
+    const [showScrollToBottom, setShowScrollToBottom] =
+        useState<boolean>(false);
+
+    // - Helpers -
+    const scrollToBottom = (smooth: boolean) => {
+        messagesEndRef.current?.scrollIntoView({
+            behavior: smooth ? 'smooth' : 'auto',
+        });
+    };
+
+    const isNearBottom = (el: HTMLElement | null) => {
+        if (!el) return false;
+        return (
+            el.scrollHeight -
+                el.scrollTop -
+                el.clientHeight <
+            150
+        );
+    };
+
+    const handleScroll = () => {
+        shouldAutoScrollRef.current = isNearBottom(
+            chatContentRef.current,
+        );
+    };
+
     // - Render -
     const renderErrorModal = () => {
         return (
@@ -47,6 +82,63 @@ export default function ChatArea({
             </div>
         );
     };
+
+    const renderScrollToBottomButton = () => {
+        if (!showScrollToBottom) return null;
+        return (
+            <button
+                className={styles.scrollToBottomButton}
+                onClick={() => scrollToBottom(true)}
+            >
+                <ArrowDown
+                    className={styles.scrollToBottomIcon}
+                />
+            </button>
+        );
+    };
+
+    // - Effects -
+    // Scroll to bottom on new messages,
+    // but only if user is already near bottom
+    useEffect(() => {
+        if (shouldAutoScrollRef.current) {
+            scrollToBottom(true);
+        }
+    }, [activeSession?.session_id]);
+
+    // Scroll to bottom on session change
+    useLayoutEffect(() => {
+        const chatContentEl = chatContentRef.current;
+        if (!chatContentEl) return;
+        chatContentEl.scrollTop =
+            chatContentEl.scrollHeight;
+    }, [activeSession?.session_id]);
+
+    // Show "scroll to bottom" button if user scrolls up
+    useEffect(() => {
+        const chatRef = chatContentRef.current;
+        const endRef = messagesEndRef.current;
+
+        if (!chatRef || !endRef) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setShowScrollToBottom(
+                    !entry.isIntersecting,
+                );
+            },
+            {
+                root: chatRef,
+                threshold: 0.1,
+            },
+        );
+
+        observer.observe(endRef);
+
+        return () => {
+            observer.disconnect();
+        };
+    }, []);
 
     return (
         <div className={styles.container}>
@@ -68,7 +160,11 @@ export default function ChatArea({
             </div>
             {/* Render error if present */}
             {uiError && renderErrorModal()}
-            <div className={styles.chatContent}>
+            <div
+                className={styles.chatContent}
+                ref={chatContentRef}
+                onScroll={handleScroll}
+            >
                 {/* Chat messages will go here */}
                 {activeMemory.length === 0 ? (
                     <ChatPlaceholder />
@@ -76,8 +172,10 @@ export default function ChatArea({
                     <ChatMessages messages={activeMemory} />
                 )}
                 <AgentThinking />
+                <div ref={messagesEndRef} />
             </div>
             <div className={styles.chatInput}>
+                {renderScrollToBottomButton()}
                 <ChatInput />
             </div>
         </div>

@@ -75,7 +75,6 @@
 
 .toggleButton.closed {
     margin-left: auto;
-    /* margin-right: auto; */
 }
 
 .toggleButton:hover {
@@ -165,7 +164,7 @@
     flex: 1;
     min-height: 0;
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: visible;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -195,22 +194,14 @@
     color: var(--text-secondary);
 }
 
-.chatItem {
-    width: 100%;
-    padding: 1rem;
-    border-radius: 1rem;
-    cursor: pointer;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
 .chatTitle {
     color: var(--text-primary);
 }
 
-.chatItem:hover {
-    background-color: var(--bg-hover-50);
-}
+/* .sessionItem {
+    width: 100%;
+    height: fit-content;
+} */
 
 .sidebarItemOpen,
 .sidebarItemClose {
@@ -256,6 +247,17 @@
     }
 }
 
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: fit-content;
+    padding: 2rem 1rem;
+    color: var(--text-secondary);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 /* --- Desktop / tablet --- */
 
 @media (min-width: 768px) {
@@ -278,6 +280,5 @@
 
     .loadingSkeleton {
         width: 80%;
-        height: 2.5rem;
     }
 }

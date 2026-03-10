@@ -40,7 +40,7 @@ export async function ensureRefreshToken(): Promise<
         };
         return res;
     }
-    return await httpAgent(
+    return await httpAgent<null>(
         '/api/users/mwalika-rt',
         'GET',
         true,
@@ -54,17 +54,19 @@ export async function ensureRefreshToken(): Promise<
  * short-lived, while the refresh token is used to
  * obtain new access tokens when they expire.
  *
- * @returns HttpApiResponse containing the new
+ * @returns TokenResponse containing the new
  * access token
  */
-export async function getAccessToken(): Promise<
-    HttpApiResponse<TokenResponse | null>
-> {
-    return await httpAgent(
+export async function getAccessToken(): Promise<TokenResponse | null> {
+    const res = await httpAgent<TokenResponse | null>(
         '/api/users/mwalika-at',
         'GET',
         true,
     );
+    if (!res || !res.meta.success || !res.data) {
+        return null;
+    }
+    return res.data;
 }
 
 /**
@@ -76,15 +78,15 @@ export async function getAccessToken(): Promise<
  * @param userId The ID of the user to claim the cookie for
  * @param claimToken The token used to claim the cookie
  * @param authToken The current authentication token for the user
- * @returns HttpApiResponse containing the new access token
+ * @returns TokenResponse containing the new access token
  */
 export async function claimUserCookie(
     userId: string,
     claimToken: string,
     authToken: string,
-): Promise<HttpApiResponse<TokenResponse | null>> {
-    return await httpAgent(
-        '/api/users/claim-cookie',
+): Promise<TokenResponse | null> {
+    const res = await httpAgent<TokenResponse | null>(
+        '/api/users/claim-user-cookie',
         'POST',
         true,
         authToken,
@@ -93,4 +95,8 @@ export async function claimUserCookie(
             claim_token: claimToken,
         },
     );
+    if (!res || !res.meta.success || !res.data) {
+        return null;
+    }
+    return res.data;
 }

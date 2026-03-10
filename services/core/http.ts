@@ -8,7 +8,7 @@
 import { cookies } from 'next/headers';
 
 // Observability
-import { captureError } from '@/lib/observability/sentry/client';
+import { captureError } from '@/lib/observability/sentry/server';
 
 // Types
 import { HttpApiResponse } from '@/types/services/api/responses.types';
@@ -28,7 +28,7 @@ type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 // --- HTTP Client ---
 
 // Overloads
-export function httpAgent<T>(
+export async function httpAgent<T>(
     endpoint: string,
     method: HttpMethod,
     parsed: true,
@@ -36,7 +36,7 @@ export function httpAgent<T>(
     data?: unknown,
 ): Promise<HttpApiResponse<T | null>>;
 
-export function httpAgent(
+export async function httpAgent(
     endpoint: string,
     method: HttpMethod,
     parsed: false,
@@ -64,7 +64,7 @@ export async function httpAgent<T>(
     data?: unknown,
 ): Promise<HttpApiResponse<T | null> | Response> {
     try {
-        const url = `${process.env.NEXT_PUBLIC_API_BASE_URL}${endpoint}`;
+        const url = `${process.env.MWALIKA_AGENT_URL}${endpoint}`;
         const cookieStore = await cookies();
 
         const options: RequestInit = {
@@ -121,7 +121,7 @@ export async function httpAgent<T>(
                 data,
             },
         };
-        captureError(sentryEvent);
+        await captureError(sentryEvent);
         if (parsed) {
             const errRes: HttpApiResponse<null> = {
                 data: null,

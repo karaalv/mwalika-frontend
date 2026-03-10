@@ -19,11 +19,14 @@ import {
 } from 'lucide-react';
 
 // Styles
-import styles from '@styles/chat/components/sidebar.module.css';
+import styles from '@styles/chat/components/sidebar/sidebar.module.css';
 
 // Context
 import { useLanguage } from '@/context/LanguageContext';
 import { useChat } from '@/context/ChatContext';
+
+// Components
+import SessionItem from '@/components/chat/sidebar/SessionItem';
 
 // Types
 import { Language } from '@/context/LanguageContext';
@@ -45,12 +48,10 @@ export default function Sidebar({
 }: SidebarProps) {
     // - Contexts -
     const { language, t, setLanguage } = useLanguage();
-    const { sessions, isLoadingSessions } = useChat();
+    const { sessions, isLoadingSessions, newSession } =
+        useChat();
 
     // - State -
-    const chatTitles: string[] = sessions.map(
-        (session) => session.chat_name,
-    );
 
     // - Render -
 
@@ -110,8 +111,14 @@ export default function Sidebar({
     };
 
     const renderNewButton = () => {
+        const isNewDisabled =
+            sessions.length >= MAX_AGENT_SESSIONS;
         return (
-            <button className={styles.newButton}>
+            <button
+                className={styles.newButton}
+                onClick={newSession}
+                disabled={isNewDisabled}
+            >
                 <div className={styles.plusIconContainer}>
                     <Plus className={styles.plusIcon} />
                 </div>
@@ -195,19 +202,14 @@ export default function Sidebar({
     };
 
     const renderChatSessions = () => {
-        if (chatTitles.length === 0) {
+        if (sessions.length === 0) {
             return renderEmptyState();
         }
-        return chatTitles.map((title, index) => (
-            <div
-                key={index}
-                className={`
-                ${styles.chatItem} 
-                ${!isSidebarOpen ? styles.sidebarItemClose : styles.sidebarItemOpen}
-            `}
-            >
-                <span className="text-body">{title}</span>
-            </div>
+        return sessions.map((session) => (
+            <SessionItem
+                key={session.session_id}
+                session={session}
+            />
         ));
     };
 
@@ -221,9 +223,14 @@ export default function Sidebar({
                         ${!isSidebarOpen ? styles.sidebarItemClose : styles.sidebarItemOpen}
                     `}
                 >
-                    {`${t('chat.sidebar.chats')} (${chatTitles.length}/${MAX_AGENT_SESSIONS})`}
+                    {`${t('chat.sidebar.chats')} (${sessions.length}/${MAX_AGENT_SESSIONS})`}
                 </span>
-                <div className={styles.chatScrollContainer}>
+                <div
+                    className={`
+                    ${styles.chatScrollContainer} 
+                    ${!isSidebarOpen ? styles.sidebarItemClose : styles.sidebarItemOpen}
+                    `}
+                >
                     {isLoadingSessions
                         ? renderLoadingState()
                         : renderChatSessions()}

@@ -26,10 +26,11 @@ export async function setCookieHeader(
     setCookieHeader: string,
 ): Promise<void> {
     const cookieStore = await cookies();
-    const cookiesArray = splitSetCookie(setCookieHeader);
+    const cookiesArray =
+        await splitSetCookie(setCookieHeader);
     for (const cookieStr of cookiesArray) {
         const { name, value, options } =
-            parseSetCookie(cookieStr);
+            await parseSetCookie(cookieStr);
         // Set the cookie in the Next.js cookies store
         cookieStore.set(name, value, options);
     }

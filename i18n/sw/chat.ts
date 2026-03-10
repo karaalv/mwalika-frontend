@@ -10,6 +10,8 @@ export const swChatTranslations = {
     'chat.sidebar.chats': 'Mazungumzo',
     'chat.sidebar.links.privacy': 'Faragha',
     'chat.sidebar.empty': 'Hakuna mazungumzo',
+    'chat.sidebar.session_options.rename': 'Badilisha jina',
+    'chat.sidebar.session_options.delete': 'Futa',
     // Chat area
     'chat.chat_area.placeholder.title': `Anza kwa kuelezea 
         huduma ya serikali unayohitaji.`,

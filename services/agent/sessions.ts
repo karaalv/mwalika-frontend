@@ -20,13 +20,15 @@ import { AgentMemory } from '@/types/services/agent/memory.types';
  * a given session ID.
  */
 export async function fetchSessionMemory(
-    session_id: string,
+    sessionId: string,
+    authToken: string,
 ): Promise<AgentMemory[] | null> {
     const res: HttpApiResponse<AgentMemory[] | null> =
         await httpAgent(
-            `/api/agent/session/${session_id}/memory`,
+            `/api/agent/session/${sessionId}/memory`,
             'GET',
             true,
+            authToken,
         );
     if (!res || !res.meta.success || !res.data) {
         return null;
@@ -39,11 +41,16 @@ export async function fetchSessionMemory(
  * authenticated user, allowing them to view and manage
  * their active and past sessions.
  */
-export async function fetchSessions(): Promise<
-    AgentSession[] | null
-> {
+export async function fetchSessions(
+    authToken: string,
+): Promise<AgentSession[] | null> {
     const res: HttpApiResponse<AgentSession[] | null> =
-        await httpAgent('/api/agent/sessions', 'GET', true);
+        await httpAgent(
+            '/api/agent/sessions',
+            'GET',
+            true,
+            authToken,
+        );
     if (!res || !res.meta.success || !res.data) {
         return null;
     }
@@ -56,16 +63,61 @@ export async function fetchSessions(): Promise<
  * session.
  */
 export async function fetchSessionById(
-    session_id: string,
+    sessionId: string,
+    authToken: string,
 ): Promise<AgentSession | null> {
     const res: HttpApiResponse<AgentSession | null> =
         await httpAgent(
-            `/api/agent/session/${session_id}`,
+            `/api/agent/session/${sessionId}`,
             'GET',
             true,
+            authToken,
         );
     if (!res || !res.meta.success || !res.data) {
         return null;
     }
     return res.data;
+}
+
+/**
+ * Deletes a specific agent session by its ID.
+ */
+export async function deleteSessionById(
+    sessionId: string,
+    authToken: string,
+): Promise<boolean> {
+    const res: HttpApiResponse<null> = await httpAgent(
+        `/api/agent/session/${sessionId}`,
+        'DELETE',
+        true,
+        authToken,
+    );
+    if (!res || !res.meta.success) {
+        return false;
+    }
+    return true;
+}
+
+/**
+ * Updates the name of a specific
+ * agent session by its ID.
+ */
+export async function updateSessionNameById(
+    sessionId: string,
+    newName: string,
+    authToken: string,
+): Promise<boolean> {
+    const res: HttpApiResponse<null> = await httpAgent(
+        `/api/agent/session/${sessionId}/update-name`,
+        'PUT',
+        true,
+        authToken,
+        {
+            new_name: newName,
+        },
+    );
+    if (!res || !res.meta.success) {
+        return false;
+    }
+    return true;
 }

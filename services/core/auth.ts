@@ -8,7 +8,7 @@ import { SignJWT } from 'jose';
 
 // --- Constants ---
 
-const FRONTEND_ISSUER = 'your-frontend-app';
+const FRONTEND_ISSUER = 'mwalika-agent-api';
 const FRONTEND_EXPIRATION_TIME = '1m';
 
 // --- Functions ---
@@ -23,14 +23,18 @@ export async function generateFrontendToken() {
         process.env.FRONTEND_SECRET!,
     );
     const timestamp = new Date().toISOString();
-    const token = await new SignJWT({ timestamp })
+    const token = await new SignJWT({
+        timestamp,
+        typ: 'frontend',
+    })
         .setProtectedHeader({
             alg: 'HS256',
-            typ: 'frontend',
+            typ: 'JWT',
         })
         .setIssuedAt()
         .setIssuer(FRONTEND_ISSUER)
         .setExpirationTime(FRONTEND_EXPIRATION_TIME)
+        .setSubject('frontend-token')
         .sign(secretKey);
     return token;
 }

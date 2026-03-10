@@ -22,7 +22,10 @@ import { useAuth } from '@/context/AuthContext';
 
 // Types
 import { AgentSession } from '@/types/services/agent/sessions.types';
-import { AgentMemory } from '@/types/services/agent/memory.types';
+import {
+    AgentMemory,
+    MemoryContentTypes,
+} from '@/types/services/agent/memory.types';
 import { StreamItem } from '@/types/services/agent/stream.types';
 
 // Services
@@ -30,6 +33,8 @@ import {
     fetchSessionMemory,
     fetchSessionById,
     fetchSessions,
+    deleteSessionById,
+    updateSessionNameById,
 } from '@/services/agent/sessions';
 
 // Mappers
@@ -37,6 +42,9 @@ import { streamItemToMemoryContent } from '@/lib/chat/mappers';
 
 // State helpers
 import { applyStreamItemToMemoryContent } from '@/lib/chat/state';
+
+// Lib
+import { generateUuid } from '@/lib/shared/ids';
 
 // --- Internal types ---
 
@@ -59,6 +67,11 @@ interface ChatContextType {
         React.SetStateAction<string[]>
     >;
     clearThinkingState: () => void;
+    // Response state
+    isAgentResponding: boolean;
+    setIsAgentResponding: React.Dispatch<
+        React.SetStateAction<boolean>
+    >;
     // Chat sessions
     isLoadingSessions: boolean;
     sessions: AgentSession[];
@@ -67,13 +80,24 @@ interface ChatContextType {
     >;
     activeSession: AgentSession | null;
     newSession: () => void;
-    setSession: (session: AgentSession) => Promise<void>;
-    fetchAndSetSessionById: (
+    setSessionFromSidebar: (
+        session: AgentSession,
+    ) => Promise<void>;
+    fetchAndAddSessionById: (
         session_id: string,
+    ) => Promise<void>;
+    deleteSession: (session_id: string) => Promise<void>;
+    updateSessionName: (
+        session_id: string,
+        new_name: string,
     ) => Promise<void>;
     // Memories for the active session
     activeMemory: AgentMemory[];
     addAgentStreamItemToMemory: (item: StreamItem) => void;
+    addUserMessageToMemory: (
+        sessionId: string,
+        message: string,
+    ) => void;
 }
 
 const ChatContext = createContext<
@@ -87,13 +111,15 @@ export default function ChatProvider({
 }) {
     // - Context -
     const { setUiError } = useNotification();
-    const { authState } = useAuth();
+    const { authState, getStateAccessToken } = useAuth();
 
     // - State management -
     const [isAgentThinking, setIsAgentThinking] =
         useState<boolean>(false);
     const [agentThinkingTitles, setAgentThinkingTitles] =
         useState<string[]>([]);
+    const [isAgentResponding, setIsAgentResponding] =
+        useState<boolean>(false);
     const [isLoadingSessions, setIsLoadingSessions] =
         useState<boolean>(false);
     const [sessions, setSessions] = useState<
@@ -126,13 +152,22 @@ export default function ChatProvider({
         setActiveSession(null);
     }, []);
 
-    const setSession = useCallback(
+    const setSessionFromSidebar = useCallback(
         async (session: AgentSession) => {
             // Check if the session is already active
             if (
                 activeSession?.session_id ===
                 session.session_id
             ) {
+                return;
+            }
+
+            const accessToken = getStateAccessToken();
+            if (!accessToken) {
+                setUiError({
+                    level: 'error',
+                    message: 'Access token not available.',
+                });
                 return;
             }
 
@@ -147,7 +182,9 @@ export default function ChatProvider({
                 const fetchedMemories =
                     await fetchSessionMemory(
                         session.session_id,
+                        accessToken,
                     );
+
                 if (!fetchedMemories) {
                     setUiError({
                         level: 'error',
@@ -176,13 +213,30 @@ export default function ChatProvider({
                 }));
             }
         },
-        [],
+        [
+            authState,
+            activeSession,
+            sessionStore,
+            setUiError,
+        ],
     );
 
-    const fetchAndSetSessionById = useCallback(
-        async (session_id: string) => {
-            const session =
-                await fetchSessionById(session_id);
+    const fetchAndAddSessionById = useCallback(
+        async (sessionId: string) => {
+            // Guard against trying to fetch
+            // session if not authenticated
+            const accessToken = getStateAccessToken();
+            if (!accessToken) {
+                setUiError({
+                    level: 'error',
+                    message: 'Access token not available.',
+                });
+                return;
+            }
+            const session = await fetchSessionById(
+                sessionId,
+                accessToken,
+            );
             if (!session) {
                 setUiError({
                     level: 'error',
@@ -190,12 +244,179 @@ export default function ChatProvider({
                 });
                 return;
             }
-            setSession(session);
+
+            // Add session to list if not already there
+            setSessions((prevSessions) => {
+                const exists = prevSessions.some(
+                    (s) => s.session_id === sessionId,
+                );
+                if (exists) {
+                    return prevSessions;
+                }
+                return [...prevSessions, session];
+            });
+
+            // Update active session if
+            // IDs match
+            setActiveSession((prev) =>
+                prev?.session_id === sessionId
+                    ? session
+                    : prev,
+            );
         },
-        [setSession, setUiError],
+        [
+            authState,
+            activeSession,
+            sessionStore,
+            setUiError,
+        ],
+    );
+
+    const deleteSession = useCallback(
+        async (sessionId: string) => {
+            const accessToken = getStateAccessToken();
+            if (!accessToken) {
+                setUiError({
+                    level: 'error',
+                    message: 'Access token not available.',
+                });
+                return;
+            }
+            const success = await deleteSessionById(
+                sessionId,
+                accessToken,
+            );
+            if (!success) {
+                setUiError({
+                    level: 'error',
+                    message: 'Failed to delete session.',
+                });
+                return;
+            }
+            // Remove session from list
+            // and store
+            setSessions((prevSessions) =>
+                prevSessions.filter(
+                    (s) => s.session_id !== sessionId,
+                ),
+            );
+            setSessionStore((prevStore) => {
+                const newStore = { ...prevStore };
+                delete newStore[sessionId];
+                return newStore;
+            });
+            // If the deleted session is the
+            // active one, clear active session
+            setActiveSession((prev) =>
+                prev?.session_id === sessionId
+                    ? null
+                    : prev,
+            );
+        },
+        [getStateAccessToken, setUiError],
+    );
+
+    const updateSessionName = useCallback(
+        async (sessionId: string, newName: string) => {
+            const accessToken = getStateAccessToken();
+            if (!accessToken) {
+                setUiError({
+                    level: 'error',
+                    message: 'Access token not available.',
+                });
+                return;
+            }
+            const success = await updateSessionNameById(
+                sessionId,
+                newName,
+                accessToken,
+            );
+            if (!success) {
+                setUiError({
+                    level: 'error',
+                    message:
+                        'Failed to update session name.',
+                });
+                return;
+            }
+            // Update session name in list
+            setSessions((prevSessions) =>
+                prevSessions.map((s) =>
+                    s.session_id === sessionId
+                        ? { ...s, chat_name: newName }
+                        : s,
+                ),
+            );
+            // Update active session if IDs match
+            setActiveSession((prev) =>
+                prev?.session_id === sessionId
+                    ? { ...prev, chat_name: newName }
+                    : prev,
+            );
+        },
+        [getStateAccessToken, setUiError],
     );
 
     // - Chat memory management -
+
+    const addUserMessageToMemory = useCallback(
+        (sessionId: string, message: string) => {
+            const newMemory: AgentMemory = {
+                session_id: sessionId,
+                user_id: '',
+                sender: 'user',
+                memory_id: generateUuid(), // Temp ID
+                timestamp: new Date().toISOString(),
+                content: [
+                    {
+                        type: MemoryContentTypes.TEXT,
+                        payload: message,
+                        content_id: generateUuid(),
+                    },
+                ],
+            };
+
+            setSessionStore((prevStore) => {
+                const sessionState = prevStore[
+                    sessionId
+                ] ?? {
+                    memoryOrder: [],
+                    memoryMap: {},
+                };
+
+                return {
+                    ...prevStore,
+                    [sessionId]: {
+                        memoryOrder: [
+                            ...sessionState.memoryOrder,
+                            newMemory.memory_id,
+                        ],
+                        memoryMap: {
+                            ...sessionState.memoryMap,
+                            [newMemory.memory_id]:
+                                newMemory,
+                        },
+                    },
+                };
+            });
+
+            // If no active session,
+            // set this as temp active session
+            // until we get the real session from
+            // the server
+            if (!activeSession) {
+                const t = new Date().toISOString();
+                setActiveSession({
+                    session_id: sessionId,
+                    user_id: '',
+                    chat_name: '',
+                    created_at: t,
+                    last_active_at: t,
+                });
+            }
+        },
+        [activeSession, setActiveSession],
+    );
 
     const addAgentStreamItemToMemory = useCallback(
         (item: StreamItem) => {
@@ -272,8 +493,16 @@ export default function ChatProvider({
     // user's sessions
     useEffect(() => {
         const loadSessions = async () => {
+            const accessToken = getStateAccessToken();
+            if (!accessToken) {
+                // Skip ui error here, since on
+                // initial load, we may not
+                // have an access token yet
+                return;
+            }
             setIsLoadingSessions(true);
-            const fetchedSessions = await fetchSessions();
+            const fetchedSessions =
+                await fetchSessions(accessToken);
             if (!fetchedSessions) {
                 setIsLoadingSessions(false);
                 setUiError({
@@ -294,6 +523,13 @@ export default function ChatProvider({
             setActiveSession(null);
             setSessionStore({});
         }
+
+        return () => {
+            // Cleanup if needed when auth state changes
+            setSessions([]);
+            setActiveSession(null);
+            setSessionStore({});
+        };
     }, [authState, setUiError]);
 
     // - Memoized context value -
@@ -323,14 +559,19 @@ export default function ChatProvider({
             agentThinkingTitles,
             setAgentThinkingTitles,
             clearThinkingState,
+            isAgentResponding,
+            setIsAgentResponding,
             isLoadingSessions,
             sessions,
             setSessions,
             activeSession,
-            setSession,
+            setSessionFromSidebar,
             newSession,
-            fetchAndSetSessionById,
+            fetchAndAddSessionById,
             addAgentStreamItemToMemory,
+            addUserMessageToMemory,
+            deleteSession,
+            updateSessionName,
             activeMemory,
         }),
         [
@@ -340,6 +581,7 @@ export default function ChatProvider({
             sessions,
             activeSession,
             activeMemory,
+            isAgentResponding,
         ],
     );
 

@@ -21,7 +21,14 @@ import { useSocket } from '@/context/SocketContext';
 import { generateUuid } from '@/lib/shared/ids';
 import { scrubString } from '@/lib/privacy/sanitize';
 
-export default function ChatInput() {
+// Component props
+interface ChatInputProps {
+    scrollToBottom: (smooth: boolean) => void;
+}
+
+export default function ChatInput({
+    scrollToBottom,
+}: ChatInputProps) {
     // - Contexts -
     const { t } = useLanguage();
     const {
@@ -70,6 +77,7 @@ export default function ChatInput() {
         if (event.key === 'Enter' && !event.shiftKey) {
             event.preventDefault();
             handleSendMessage();
+            scrollToBottom(true);
         }
     };
 

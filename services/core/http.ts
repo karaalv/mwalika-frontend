@@ -23,7 +23,12 @@ import { generateFrontendToken } from '@services/core/auth';
 // Cookies
 import { setCookieHeader } from '@services/core/cookies';
 
-type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type HttpMethod =
+    | 'GET'
+    | 'POST'
+    | 'PUT'
+    | 'DELETE'
+    | 'PATCH';
 
 // --- HTTP Client ---
 

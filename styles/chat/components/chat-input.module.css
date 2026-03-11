@@ -20,10 +20,15 @@
     resize: none;
     border: none;
     outline: none;
+    background-color: transparent;
 }
 
 .input::placeholder {
     color: var(--text-secondary);
+}
+
+.input:disabled {
+    cursor: not-allowed;
 }
 
 .sendButton {

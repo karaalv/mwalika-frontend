@@ -10,7 +10,7 @@
 .message {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 3rem;
 }
 
 .userMessage {
@@ -36,7 +36,7 @@
 .linkTitleContainer {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
     flex: 1;
     word-break: break-word;
     overflow-wrap: anywhere;

@@ -102,7 +102,7 @@ export default function Navbar() {
                 : 'var(--text-alternative)';
         const languages = {
             [Language.ENGLISH]: 'English',
-            [Language.SWAHILI]: 'Kiswahili',
+            [Language.SWAHILI]: 'Swahili',
         };
         return (
             <div className={styles.languageSelector}>

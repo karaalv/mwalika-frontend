@@ -12,6 +12,7 @@ import Link from 'next/link';
 
 // Styles
 import styles from '@styles/chat/components/chat-messages.module.css';
+import markdownStyles from '@styles/chat/components/markdown-reset.module.css';
 
 // Types
 import {
@@ -93,7 +94,9 @@ export default function ChatMessages({
 
 function TextContent({ text }: { text: string }) {
     return (
-        <div className="text-body">
+        <div
+            className={`text-body ${markdownStyles.markdown}`}
+        >
             <ReactMarkdown>{text}</ReactMarkdown>
         </div>
     );

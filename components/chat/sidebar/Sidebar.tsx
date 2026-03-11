@@ -24,6 +24,7 @@ import styles from '@styles/chat/components/sidebar/sidebar.module.css';
 // Context
 import { useLanguage } from '@/context/LanguageContext';
 import { useChat } from '@/context/ChatContext';
+import { useAuth } from '@/context/AuthContext';
 
 // Components
 import SessionItem from '@/components/chat/sidebar/SessionItem';
@@ -47,11 +48,21 @@ export default function Sidebar({
     setIsSidebarOpen,
 }: SidebarProps) {
     // - Contexts -
-    const { language, t, setLanguage } = useLanguage();
+    const { language, t, setLanguageUpdatePreference } =
+        useLanguage();
     const { sessions, isLoadingSessions, newSession } =
         useChat();
+    const { getStateAccessToken } = useAuth();
 
     // - State -
+
+    // - Callback handlers -
+    const handleLanguageChange = async (lang: Language) => {
+        await setLanguageUpdatePreference(
+            lang,
+            getStateAccessToken() || '',
+        );
+    };
 
     // - Render -
 
@@ -67,7 +78,7 @@ export default function Sidebar({
             >
                 <button
                     className="text-body"
-                    onClick={() => setLanguage(en)}
+                    onClick={() => handleLanguageChange(en)}
                     style={{
                         opacity: language === en ? 1 : 0.6,
                     }}
@@ -77,12 +88,12 @@ export default function Sidebar({
                 <div className={styles.circle} />
                 <button
                     className="text-body"
-                    onClick={() => setLanguage(sw)}
+                    onClick={() => handleLanguageChange(sw)}
                     style={{
                         opacity: language === sw ? 1 : 0.6,
                     }}
                 >
-                    Kiswahili
+                    Swahili
                 </button>
             </div>
         );

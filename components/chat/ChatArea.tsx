@@ -50,6 +50,15 @@ export default function ChatArea({
     const shouldAutoScrollRef = useRef<boolean>(true);
     const [showScrollToBottom, setShowScrollToBottom] =
         useState<boolean>(false);
+    // Resolve current message length for auto scroll
+    const lastMemory =
+        activeMemory[activeMemory.length - 1];
+    const lastMemoryContentItem =
+        lastMemory?.content?.[
+            lastMemory.content.length - 1
+        ];
+    const currentMessageLength =
+        lastMemoryContentItem?.payload.length || 0;
 
     // - Helpers -
     const scrollToBottom = (smooth: boolean) => {
@@ -104,7 +113,7 @@ export default function ChatArea({
         if (shouldAutoScrollRef.current) {
             scrollToBottom(true);
         }
-    }, [activeSession?.session_id]);
+    }, [currentMessageLength]);
 
     // Scroll to bottom on session change
     useLayoutEffect(() => {
@@ -176,7 +185,9 @@ export default function ChatArea({
             </div>
             <div className={styles.chatInput}>
                 {renderScrollToBottomButton()}
-                <ChatInput />
+                <ChatInput
+                    scrollToBottom={scrollToBottom}
+                />
             </div>
         </div>
     );

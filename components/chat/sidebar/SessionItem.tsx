@@ -66,10 +66,6 @@ export default function SessionItem({
     ) => {
         if (e.key === 'Enter') {
             const sanitizedChatName = scrubString(chatName);
-            console.log(
-                'Sanitized chat name:',
-                sanitizedChatName,
-            );
             if (sanitizedChatName.trim() === '') {
                 setChatName(session.chat_name);
             } else {

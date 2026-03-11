@@ -81,15 +81,15 @@ h6:first-child {
 /* --- Paragraph spacing --- */
 
 p {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 }
 
 /* --- List spacing --- */
 
 ul,
 ol {
-    margin-bottom: 1rem;
-    padding-left: 1.5rem;
+    margin-bottom: 2.5rem;
+    padding-left: 3rem;
 }
 
 /* --- Scroll behavior --- */

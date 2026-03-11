@@ -16,15 +16,33 @@ import React, {
     useRef,
 } from 'react';
 
+// Contexts
+import { useNotification } from '@/context/NotificationContext';
+import { useLanguage } from '@/context/LanguageContext';
+
 // Services
 import {
     getAccessToken,
     ensureRefreshToken,
     claimUserCookie,
 } from '@services/users/auth';
+import {
+    fetchAnonymousUser,
+    updateUserLanguagePreference,
+} from '@services/users/core';
 
-// Contexts
-import { useNotification } from '@/context/NotificationContext';
+// Lib
+import {
+    mapLanguageToUserPreference,
+    mapUserPreferenceToLanguage,
+} from '@/lib/users/mappers';
+
+// Types
+import {
+    SentryEvent,
+    SeverityLevel,
+} from '@/types/lib/observability/sentry/core.types';
+import { captureError } from '@/lib/observability/sentry/client';
 
 // --- Internal types ---
 
@@ -67,6 +85,7 @@ export default function AuthProvider({
 }) {
     // - Context -
     const { setUiError } = useNotification();
+    const { language, setLanguage } = useLanguage();
 
     // - State -
     const [authState, setAuthState] =
@@ -183,8 +202,15 @@ export default function AuthProvider({
                     message: 'Failed to claim user cookie.',
                 });
             }
+
+            // Update user language preference
+            // in the backend based on the current state
+            await updateUserLanguagePreference(
+                mapLanguageToUserPreference(language),
+                accessToken,
+            );
         },
-        [setUiError],
+        [setUiError, language],
     );
 
     // - Effects -
@@ -210,6 +236,42 @@ export default function AuthProvider({
         scheduleAccessTokenRefresh,
         clearRefreshAccessTimeout,
     ]);
+
+    useEffect(() => {
+        // On initial load, fetch the user's language preference
+        // and set the language accordingly
+        const fetchUserLanguagePreference = async () => {
+            try {
+                const accessToken = getStateAccessToken();
+                if (!accessToken) {
+                    return;
+                }
+                const user =
+                    await fetchAnonymousUser(accessToken);
+                if (!user) {
+                    // If user is not set, leave
+                    // language as default (English)
+                    return;
+                }
+                const userLanguage =
+                    mapUserPreferenceToLanguage(
+                        user.language_preference,
+                    );
+                setLanguage(userLanguage);
+            } catch (error) {
+                const sentryEvent: SentryEvent = {
+                    error: error,
+                    page: 'AuthContext',
+                    message:
+                        'Error fetching user language preference',
+                    level: SeverityLevel.WARNING,
+                };
+                captureError(sentryEvent);
+            }
+        };
+
+        fetchUserLanguagePreference();
+    }, [getStateAccessToken]);
 
     // - Memoized context value -
     const value = useMemo<AuthContextType>(

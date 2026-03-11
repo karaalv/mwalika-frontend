@@ -1,0 +1,31 @@
+/* Chat Messages: Markdown reset */
+
+.markdown {
+    /* Paragraphs */
+    p {
+        line-height: 2.3;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Lists */
+    ul,
+    ol {
+        margin-bottom: 2rem;
+        padding-left: 3rem;
+    }
+
+    /* Nested lists */
+    ul ul,
+    ul ol,
+    ol ul,
+    ol ol {
+        margin-top: 0.5rem;
+        margin-bottom: 1.5rem;
+        padding-left: 3rem;
+    }
+
+    /* List items */
+    li {
+        margin-bottom: 1.5rem;
+    }
+}

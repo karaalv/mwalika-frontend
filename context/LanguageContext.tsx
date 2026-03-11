@@ -11,14 +11,30 @@ import React, {
     useContext,
     useState,
     useMemo,
+    useCallback,
 } from 'react';
 
 // Dictionaries
 import { enDictionary, swDictionary } from '@/i18n/index';
 
+// Services
+import { updateUserLanguagePreference } from '@services/users/core';
+
+// Lib
+import { mapLanguageToUserPreference } from '@/lib/users/mappers';
+
+// Observability
+import { captureError } from '@/lib/observability/sentry/client';
+
+// Types
+import {
+    SentryEvent,
+    SeverityLevel,
+} from '@/types/lib/observability/sentry/core.types';
+
 export enum Language {
-    ENGLISH = 'en',
-    SWAHILI = 'sw',
+    ENGLISH = 'english',
+    SWAHILI = 'swahili',
 }
 
 interface LanguageContextType {
@@ -27,6 +43,10 @@ interface LanguageContextType {
         React.SetStateAction<Language>
     >;
     t: (key: string) => string;
+    setLanguageUpdatePreference: (
+        lang: Language,
+        accessToken: string,
+    ) => Promise<void>;
 }
 
 const LanguageContext = createContext<
@@ -38,10 +58,17 @@ export default function LanguageProvider({
 }: {
     children: React.ReactNode;
 }) {
+    // - Context -
+    // This is the highest level context,
+    // unless this provider is nested inside another provider,
+    // DO NOT try to use any other context inside this provider
+
+    // - State -
     const [language, setLanguage] = useState<Language>(
         Language.ENGLISH,
     );
 
+    // - Helper functions -
     // Translation function
     const t = (key: string) => {
         if (language === Language.SWAHILI) {
@@ -52,8 +79,44 @@ export default function LanguageProvider({
         return key;
     };
 
+    const setLanguageUpdatePreference = useCallback(
+        async (lang: Language, accessToken: string) => {
+            setLanguage(lang);
+            if (!accessToken) {
+                return;
+            }
+            try {
+                if (!accessToken) {
+                    return;
+                }
+                await updateUserLanguagePreference(
+                    mapLanguageToUserPreference(lang),
+                    accessToken,
+                );
+            } catch (error) {
+                const sentryEvent: SentryEvent = {
+                    error: error,
+                    page: 'LanguageContext',
+                    message:
+                        'Error updating user language preference',
+                    level: SeverityLevel.WARNING,
+                };
+                captureError(sentryEvent);
+            }
+        },
+        [],
+    );
+
+    // - Effects -
+
+    // - Memoized context value -
     const value = useMemo(
-        () => ({ language, setLanguage, t }),
+        () => ({
+            language,
+            setLanguage,
+            t,
+            setLanguageUpdatePreference,
+        }),
         [language],
     );
 

@@ -13,6 +13,7 @@ export interface MemoryContent {
     content_id: string;
     type: MemoryContentTypes;
     payload: string;
+    title: string | null;
 }
 
 export interface AgentMemory {

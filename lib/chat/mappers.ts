@@ -36,5 +36,6 @@ export function streamItemToMemoryContent(
         content_id: item.stream_id,
         type: contentType,
         payload: item.payload,
+        title: item.title,
     };
 }

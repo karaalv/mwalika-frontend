@@ -23,6 +23,7 @@ function _mockGetMemory(): AgentMemory[] {
                     type: MemoryContentTypes.TEXT,
                     payload: 'Hello, how are you?',
                     content_id: 'content1',
+                    title: null,
                 },
             ],
         },
@@ -38,18 +39,21 @@ function _mockGetMemory(): AgentMemory[] {
                     payload:
                         "I'm good, thank you! How can I assist you today?",
                     content_id: 'content2',
+                    title: null,
                 },
                 {
                     type: MemoryContentTypes.LINK,
                     payload:
                         'https://react.dev/reference/react/useContext/ecitizen',
                     content_id: 'content3',
+                    title: 'React useContext Documentation',
                 },
                 {
                     type: MemoryContentTypes.IMAGE,
                     payload:
                         'https://demoadmin.ecitizen.pesaflow.com/assets/uploads/Agricultural-Development-Corporation-log.png',
                     content_id: 'content4',
+                    title: 'Agricultural Development Corporation Logo',
                 },
             ],
         },
@@ -65,18 +69,21 @@ function _mockGetMemory(): AgentMemory[] {
                     payload:
                         "I'm good, thank you! How can I assist you today?",
                     content_id: 'content5',
+                    title: null,
                 },
                 {
                     type: MemoryContentTypes.LINK,
                     payload:
                         'https://react.dev/reference/react/useContext/ecitizen',
                     content_id: 'content6',
+                    title: 'React useContext Documentation',
                 },
                 {
                     type: MemoryContentTypes.IMAGE,
                     payload:
                         'https://demoadmin.ecitizen.pesaflow.com/assets/uploads/Agricultural-Development-Corporation-log.png',
                     content_id: 'content7',
+                    title: 'Agricultural Development Corporation Logo',
                 },
             ],
         },

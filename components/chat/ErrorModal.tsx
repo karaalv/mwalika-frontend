@@ -27,6 +27,7 @@ export default function ErrorModal() {
         <div
             className={styles.overlay}
             style={{
+                border: `1px solid ${statusColor}`,
                 borderLeft: `5px solid ${statusColor}`,
             }}
         >

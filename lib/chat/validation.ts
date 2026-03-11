@@ -15,6 +15,8 @@ export function validateStreamItem(
         typeof data !== 'object' ||
         typeof data.type !== 'string' ||
         typeof data.payload !== 'string' ||
+        (typeof data.title !== 'string' &&
+            data.title !== null) ||
         typeof data.user_id !== 'string' ||
         typeof data.session_id !== 'string' ||
         typeof data.memory_id !== 'string' ||
@@ -27,6 +29,7 @@ export function validateStreamItem(
     return {
         type: data.type,
         payload: data.payload,
+        title: data.title,
         user_id: data.user_id,
         session_id: data.session_id,
         memory_id: data.memory_id,

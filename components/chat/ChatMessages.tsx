@@ -41,11 +41,17 @@ export default function ChatMessages({
                 );
             case MemoryContentTypes.IMAGE:
                 return (
-                    <ImageContent url={content.payload} />
+                    <ImageContent
+                        url={content.payload}
+                        title={content.title}
+                    />
                 );
             case MemoryContentTypes.LINK:
                 return (
-                    <LinkContent url={content.payload} />
+                    <LinkContent
+                        url={content.payload}
+                        title={content.title}
+                    />
                 );
             default:
                 return null;
@@ -93,12 +99,18 @@ function TextContent({ text }: { text: string }) {
     );
 }
 
-function ImageContent({ url }: { url: string }) {
+function ImageContent({
+    url,
+    title,
+}: {
+    url: string;
+    title: string | null;
+}) {
     return (
         <div className={styles.imageWrapper}>
             <img
                 src={url}
-                alt=""
+                alt={title || ''}
                 width={100}
                 height={100}
                 loading="lazy"
@@ -108,10 +120,22 @@ function ImageContent({ url }: { url: string }) {
     );
 }
 
-function LinkContent({ url }: { url: string }) {
+function LinkContent({
+    url,
+    title,
+}: {
+    url: string;
+    title: string | null;
+}) {
     // - Helper functions -
 
     const urlTitle = (url: string) => {
+        // If title is provided, use it
+        if (title) {
+            return title;
+        }
+
+        // Fallback to domain name extraction
         try {
             const { hostname } = new URL(url);
 

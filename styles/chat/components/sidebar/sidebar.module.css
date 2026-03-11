@@ -98,7 +98,7 @@
 .plusIcon {
     width: 1.5rem;
     height: 1.5rem;
-    color: var(--text-primary);
+    color: var(--text-alternative);
     flex-shrink: 0;
 }
 
@@ -107,7 +107,7 @@
     height: fit-content;
     padding: 0.5rem;
     border-radius: 100px;
-    background-color: var(--text-alternative);
+    background-color: var(--color-accent);
     display: flex;
     align-items: center;
     justify-content: center;

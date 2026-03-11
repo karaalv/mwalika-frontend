@@ -3,7 +3,6 @@
 .container {
     display: flex;
     flex-direction: column;
-    /* background-color: red; */
     gap: 3rem;
     padding: 1rem;
 }
@@ -16,7 +15,7 @@
 
 .userMessage {
     padding: 1rem;
-    background-color: var(--bg-primary);
+    background-color: var(--bg-secondary);
     border-radius: 2rem;
     width: fit-content;
     margin-left: auto;
@@ -31,9 +30,7 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    background-color: var(--surface-glass);
-    -webkit-backdrop-filter: blur(var(--blur-glass));
-    backdrop-filter: blur(var(--blur-glass));
+    background-color: var(--bg-secondary);
 }
 
 .linkTitleContainer {
@@ -64,7 +61,6 @@
     height: 20rem;
     padding: 1rem;
     border-radius: 1rem;
-    background-color: var(--bg-shimmer-secondary);
 }
 
 .imageContent {

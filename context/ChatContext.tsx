@@ -372,6 +372,7 @@ export default function ChatProvider({
                         type: MemoryContentTypes.TEXT,
                         payload: message,
                         content_id: generateUuid(),
+                        title: null,
                     },
                 ],
             };

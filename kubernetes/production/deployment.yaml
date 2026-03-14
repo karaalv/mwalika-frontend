@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mwalika-frontend-production
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mwalika-frontend-production
+  template:
+    metadata:
+      labels:
+        app: mwalika-frontend-production
+    spec:
+      containers:
+        - name: mwalika-frontend
+          imagePullPolicy: IfNotPresent
+          image: ${IMAGE_REF}
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: mwalika-frontend-env-production
+          resources:
+            requests:
+              cpu: "100m"         # 0.1 vCPU guaranteed
+              memory: "128Mi"     # 128 MiB guaranteed
+            limits:
+              cpu: "500m"         # Max 0.5 vCPU allowed
+              memory: "512Mi"     # Max 512 MiB allowed
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 10
+            failureThreshold: 3
+      imagePullSecrets:
+        - name: regcred-mwalika

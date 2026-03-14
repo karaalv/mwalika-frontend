@@ -1,4 +1,6 @@
-# Mwalika Frontend
+# Mwalika: Agentic AI System for eCitizen Platform
+
+**Resource Version**: `1.0.0`
 
 This repository contains the frontend for **Mwalika**, including
 the landing page, privacy page, and chat interface that allows

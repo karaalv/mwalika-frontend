@@ -20,14 +20,13 @@
 export async function getSocketUrl(
     authToken: string,
 ): Promise<string> {
-    const wsUrl = process.env.MWALIKA_AGENT_URL_WS;
-    if (!wsUrl) {
+    const agentUrl = process.env.MWALIKA_AGENT_URL;
+    if (!agentUrl) {
         throw new Error(
-            `WebSocket URL is not
-            defined in environment variables`,
+            `Agent URL is not defined in environment variables`,
         );
     }
     // Append the access token as a
     // query parameter for authentication
-    return `${wsUrl}/api/agent/ws/chat?access_token=${authToken}`;
+    return `${agentUrl}/api/agent/ws/chat?access_token=${authToken}`;
 }

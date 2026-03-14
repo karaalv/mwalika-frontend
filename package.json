@@ -19,6 +19,7 @@
         ]
     },
     "dependencies": {
+        "@next/third-parties": "^16.1.6",
         "@sentry/nextjs": "^10.42.0",
         "jose": "^6.2.0",
         "lucide-react": "^0.577.0",

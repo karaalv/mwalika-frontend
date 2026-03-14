@@ -12,6 +12,7 @@ import NotificationProvider from '@/context/NotificationContext';
 import AuthProvider from '@/context/AuthContext';
 import ChatProvider from '@/context/ChatContext';
 import SocketProvider from '@/context/SocketContext';
+import OverlayProvider from '@/context/OverlayContext';
 
 // Change title for chat page
 export const metadata: Metadata = {
@@ -32,7 +33,9 @@ export default function ChatLayout({
             <AuthProvider>
                 <ChatProvider>
                     <SocketProvider>
-                        {children}
+                        <OverlayProvider>
+                            {children}
+                        </OverlayProvider>
                     </SocketProvider>
                 </ChatProvider>
             </AuthProvider>

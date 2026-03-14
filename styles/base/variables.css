@@ -49,6 +49,7 @@
 
     /* --- Z Index --- */
 
+    --z-index-overlay: 2000;
     --z-index-navbar: 1000;
     --z-index-chat-sidebar-options: 500;
     --z-index-chat-sidebar: 100;

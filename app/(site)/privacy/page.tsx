@@ -3,16 +3,23 @@
  * @description: Privacy policy page for
  * the Mwalika application.
  */
+// React
+import { useEffect } from 'react';
 
 // Styles
 import styles from '@/styles/privacy/privacy.module.css';
 
 // Context
 import { useLanguage } from '@/context/LanguageContext';
+import { useSiteLayout } from '@/context/LayoutContext';
+
+// Types
+import { NavbarTextColor } from '@/context/LayoutContext';
 
 export default function PrivacyPolicyPage() {
     // - Contexts -
     const { t } = useLanguage();
+    const { setNavbarTextColor } = useSiteLayout();
 
     // - Render -
     const renderTitle = () => (
@@ -136,6 +143,11 @@ export default function PrivacyPolicyPage() {
             <p>{t('privacy.contact.email')}</p>
         </div>
     );
+
+    // - Effects -
+    useEffect(() => {
+        setNavbarTextColor(NavbarTextColor.DARK);
+    }, [setNavbarTextColor]);
 
     return (
         <div className={styles.container}>

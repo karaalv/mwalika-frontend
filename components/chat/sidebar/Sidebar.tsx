@@ -16,6 +16,7 @@ import {
     PanelLeft,
     Plus,
     Sparkles,
+    Megaphone,
 } from 'lucide-react';
 
 // Styles
@@ -25,6 +26,10 @@ import styles from '@styles/chat/components/sidebar/sidebar.module.css';
 import { useLanguage } from '@/context/LanguageContext';
 import { useChat } from '@/context/ChatContext';
 import { useAuth } from '@/context/AuthContext';
+import {
+    useOverlay,
+    OverlayType,
+} from '@/context/OverlayContext';
 
 // Components
 import SessionItem from '@/components/chat/sidebar/SessionItem';
@@ -53,6 +58,7 @@ export default function Sidebar({
     const { sessions, isLoadingSessions, newSession } =
         useChat();
     const { getStateAccessToken } = useAuth();
+    const { openOverlay } = useOverlay();
 
     // - State -
 
@@ -183,6 +189,25 @@ export default function Sidebar({
                         {t('chat.sidebar.links.privacy')}
                     </span>
                 </Link>
+                <button
+                    className={styles.link}
+                    onClick={() =>
+                        openOverlay(OverlayType.BUG_REPORT)
+                    }
+                >
+                    <Megaphone className={styles.icon} />
+                    <span
+                        className={`text-body-standout ${
+                            !isSidebarOpen
+                                ? styles.sidebarItemClose
+                                : styles.sidebarItemOpen
+                        }`}
+                    >
+                        {t(
+                            'chat.sidebar.links.report_issue',
+                        )}
+                    </span>
+                </button>
             </div>
         );
     };

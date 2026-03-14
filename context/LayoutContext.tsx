@@ -36,7 +36,7 @@ export default function SiteLayoutProvider({
 }) {
     const isMobile = useMediaQuery({ maxWidth: 768 });
     const [navbarTextColor, setNavbarTextColor] =
-        useState<NavbarTextColor>(NavbarTextColor.DARK);
+        useState<NavbarTextColor>(NavbarTextColor.LIGHT);
 
     const value = useMemo(
         () => ({

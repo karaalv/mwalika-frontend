@@ -34,11 +34,13 @@ jobs:
                     MWALIKA_SERVICE,
                     BUCKET_NAME,
                     SCRIPT_LOCATION,
+                    AWS_REGION,
                     GIT_BRANCH
               env:
                 MWALIKA_SERVICE: ${{ vars.SERVICE_NAME }}
                 BUCKET_NAME: ${{ vars.SCRIPT_BUCKET }}
                 SCRIPT_LOCATION: ${{ vars.BUILD_SCRIPT_LOCATION }}
+                AWS_REGION: ${{ vars.AWS_REGION }}
                 GIT_BRANCH: main
 
     deploy_release:
@@ -55,7 +57,7 @@ jobs:
                 aws-region: ${{ vars.AWS_REGION }}
 
             - name: Set up Python
-              uses: actions/setup-python@v5
+              uses: actions/setup-python@v6
               with:
                 python-version: '3.12'
 
@@ -68,3 +70,4 @@ jobs:
                 env-vars-for-script: |
                   GIT_BRANCH=main
                   MWALIKA_SERVICE=${{ vars.SERVICE_NAME }}
+                  AWS_REGION=${{ vars.AWS_REGION }}

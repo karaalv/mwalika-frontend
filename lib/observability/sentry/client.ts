@@ -7,7 +7,7 @@
  */
 
 import * as Sentry from '@sentry/nextjs';
-import { scrub } from '@/lib/privacy/sanitize';
+import { scrub, scrubString } from '@/lib/privacy/sanitize';
 
 // Types
 import {
@@ -110,7 +110,9 @@ export function captureError(event: SentryEvent) {
         // Set extras
         scope.setExtra(
             'message',
-            event.message || 'No message provided',
+            event.message
+                ? scrubString(event.message)
+                : 'No message provided',
         );
         if (extras) {
             for (const [k, v] of Object.entries(extras)) {
@@ -119,4 +121,36 @@ export function captureError(event: SentryEvent) {
         }
         Sentry.captureException(error);
     });
+}
+
+// --- Bug Report Function ---
+
+/**
+ * Submits a bug report to Sentry
+ * using the User Feedback API.
+ */
+export async function submitBugReport(
+    message: string,
+    name?: string,
+    email?: string,
+): Promise<string> {
+    return Sentry.sendFeedback(
+        {
+            message: scrubString(message),
+            name,
+            email,
+            source: 'bug_report_form',
+            url: window.location.href,
+            tags: {
+                channel: 'manual_feedback',
+            },
+        },
+        {
+            captureContext: {
+                tags: {
+                    feature: 'feedback',
+                },
+            },
+        },
+    );
 }

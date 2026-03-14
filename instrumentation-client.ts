@@ -15,6 +15,13 @@ Sentry.init({
     ),
     enableLogs: true,
     sendDefaultPii: false,
+    integrations: [
+        Sentry.feedbackIntegration({
+            autoInject: false,
+            enableScreenshot: false,
+            colorScheme: 'system',
+        }),
+    ],
 });
 
 export const onRouterTransitionStart =

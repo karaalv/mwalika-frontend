@@ -2,7 +2,7 @@
 
 .container {
     background-color: var(--bg-primary);
-    width: 100%;
+    width: 95%;
     border-radius: var(--radius-main);
     display: flex;
     flex-direction: row;
@@ -21,6 +21,7 @@
     border: none;
     outline: none;
     background-color: transparent;
+    font-size: 1.6rem;
 }
 
 .input::placeholder {

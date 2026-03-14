@@ -12,14 +12,17 @@ import styles from '@styles/chat/chat-page.module.css';
 
 // Context
 import { useSiteLayout } from '@/context/LayoutContext';
+import { useOverlay } from '@/context/OverlayContext';
 
 // Components
 import Sidebar from '@components/chat/sidebar/Sidebar';
 import ChatArea from '@components/chat/ChatArea';
+import OverlayManager from '@components/chat/overlay/OverlayManager';
 
 export default function ChatPage() {
     // - Context -
     const { isMobile } = useSiteLayout();
+    const { currentOverlay } = useOverlay();
 
     // - State -
     // Open default on desktop, closed on mobile
@@ -30,6 +33,8 @@ export default function ChatPage() {
 
     return (
         <div className={styles.container}>
+            {/* Overlay manager */}
+            {currentOverlay && <OverlayManager />}
             <div
                 className={`
                     ${styles.sidebar} 

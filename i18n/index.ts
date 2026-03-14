@@ -12,6 +12,7 @@ import { enFooterTranslations } from './en/footer';
 import { enNotFoundTranslations } from './en/not-found';
 import { enPrivacyTranslations } from './en/privacy';
 import { enChatTranslations } from './en/chat';
+import { enOverlayTranslations } from './en/overlay';
 
 // Swahili translations
 import { swNavbarTranslations } from './sw/navbar';
@@ -21,6 +22,7 @@ import { swFooterTranslations } from './sw/footer';
 import { swNotFoundTranslations } from './sw/not-found';
 import { swPrivacyTranslations } from './sw/privacy';
 import { swChatTranslations } from './sw/chat';
+import { swOverlayTranslations } from './sw/overlay';
 
 export const enDictionary: Record<string, string> = {
     ...enNavbarTranslations,
@@ -30,6 +32,7 @@ export const enDictionary: Record<string, string> = {
     ...enNotFoundTranslations,
     ...enPrivacyTranslations,
     ...enChatTranslations,
+    ...enOverlayTranslations,
 };
 
 export const swDictionary: Record<string, string> = {
@@ -40,4 +43,5 @@ export const swDictionary: Record<string, string> = {
     ...swNotFoundTranslations,
     ...swPrivacyTranslations,
     ...swChatTranslations,
+    ...swOverlayTranslations,
 };

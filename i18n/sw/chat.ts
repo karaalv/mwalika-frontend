@@ -9,6 +9,7 @@ export const swChatTranslations = {
     'chat.sidebar.new': 'Mpya',
     'chat.sidebar.chats': 'Mazungumzo',
     'chat.sidebar.links.privacy': 'Faragha',
+    'chat.sidebar.links.report_issue': 'Ripoti Shida',
     'chat.sidebar.empty': 'Hakuna mazungumzo',
     'chat.sidebar.session_options.rename': 'Badilisha jina',
     'chat.sidebar.session_options.delete': 'Futa',

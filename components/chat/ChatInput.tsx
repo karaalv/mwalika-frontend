@@ -114,7 +114,7 @@ export default function ChatInput({
         <div className={styles.container}>
             <textarea
                 ref={inputRef}
-                className={`text-body ${styles.input}`}
+                className={`${styles.input}`}
                 rows={1}
                 placeholder={t(
                     'chat.chat_input.placeholder',

@@ -6,6 +6,7 @@
  */
 
 // React/Next
+import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -109,15 +110,20 @@ function ImageContent({
     url: string;
     title: string | null;
 }) {
+    // - State -
+    const [src, setSrc] = useState<string>(url);
+    const fallbackSrc = '/assets/ken-coa.png';
+
     return (
         <div className={styles.imageWrapper}>
             <img
-                src={url}
+                src={src}
                 alt={title || ''}
                 width={100}
                 height={100}
                 loading="lazy"
                 className={styles.imageContent}
+                onError={() => setSrc(fallbackSrc)}
             />
         </div>
     );

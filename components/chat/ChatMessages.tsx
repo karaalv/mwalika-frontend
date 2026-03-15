@@ -15,6 +15,9 @@ import Link from 'next/link';
 import styles from '@styles/chat/components/chat-messages.module.css';
 import markdownStyles from '@styles/chat/components/markdown-reset.module.css';
 
+// Components
+import ChatPlaceholder from '@/components/chat/ChatPlaceholder';
+
 // Types
 import {
     AgentMemory,
@@ -84,10 +87,26 @@ export default function ChatMessages({
             </div>
         );
     };
+
+    const renderMessages = () => {
+        if (messages.length === 0) {
+            return null;
+        }
+        return (
+            <div className={styles.container}>
+                {messages.map(renderMessage)}
+            </div>
+        );
+    };
+
     return (
-        <div className={styles.container}>
-            {messages.map(renderMessage)}
-        </div>
+        <>
+            {messages.length === 0 ? (
+                <ChatPlaceholder />
+            ) : (
+                renderMessages()
+            )}
+        </>
     );
 }
 

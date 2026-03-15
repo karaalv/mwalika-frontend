@@ -163,7 +163,7 @@ export default function Sidebar({
                 >
                     <Sparkles className={styles.aiIcon} />
                     <span
-                        className={`text-body-standout ${
+                        className={`${
                             !isSidebarOpen
                                 ? styles.sidebarItemClose
                                 : styles.sidebarItemOpen
@@ -180,7 +180,7 @@ export default function Sidebar({
                 >
                     <LockKeyhole className={styles.icon} />
                     <span
-                        className={`text-body-standout ${
+                        className={`${
                             !isSidebarOpen
                                 ? styles.sidebarItemClose
                                 : styles.sidebarItemOpen
@@ -197,7 +197,7 @@ export default function Sidebar({
                 >
                     <Megaphone className={styles.icon} />
                     <span
-                        className={`text-body-standout ${
+                        className={`${
                             !isSidebarOpen
                                 ? styles.sidebarItemClose
                                 : styles.sidebarItemOpen

@@ -4,14 +4,17 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    align-self: center;
     height: 100%;
-    width: 100%;
+    width: 95%;
     color: var(--text-secondary);
 }
 
 .textContainer {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 3rem;
     width: 100%;
 }
@@ -21,6 +24,6 @@
 @media (min-width: 768px) {
     .textContainer {
         gap: 5rem;
-        width: 80%;
+        width: 90%;
     }
 }

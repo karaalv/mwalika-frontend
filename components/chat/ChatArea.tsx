@@ -20,7 +20,6 @@ import { PanelLeft, ArrowDown } from 'lucide-react';
 import styles from '@styles/chat/components/chat-area.module.css';
 
 // Components
-import ChatPlaceholder from '@/components/chat/ChatPlaceholder';
 import ChatInput from '@components/chat/ChatInput';
 import ErrorModal from '@components/chat/ErrorModal';
 import AgentThinking from '@components/chat/AgentThinking';
@@ -175,11 +174,7 @@ export default function ChatArea({
                 onScroll={handleScroll}
             >
                 {/* Chat messages will go here */}
-                {activeMemory.length === 0 ? (
-                    <ChatPlaceholder />
-                ) : (
-                    <ChatMessages messages={activeMemory} />
-                )}
+                <ChatMessages messages={activeMemory} />
                 <AgentThinking />
                 <div ref={messagesEndRef} />
             </div>

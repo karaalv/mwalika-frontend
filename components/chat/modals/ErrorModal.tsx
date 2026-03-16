@@ -8,7 +8,7 @@
 import { X } from 'lucide-react';
 
 // Styles
-import styles from '@styles/chat/components/error-modal.module.css';
+import styles from '@styles/chat/modals/error-modal.module.css';
 
 // Context
 import { useNotification } from '@/context/NotificationContext';

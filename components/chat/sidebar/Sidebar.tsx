@@ -17,6 +17,7 @@ import {
     Plus,
     Sparkles,
     Megaphone,
+    ThumbsUp,
 } from 'lucide-react';
 
 // Styles
@@ -36,6 +37,7 @@ import SessionItem from '@/components/chat/sidebar/SessionItem';
 
 // Types
 import { Language } from '@/context/LanguageContext';
+import { PromptSource } from '@/types/services/users/feedback';
 
 // Constants
 import { MAX_AGENT_SESSIONS } from '@/services/agent/config';
@@ -55,8 +57,12 @@ export default function Sidebar({
     // - Contexts -
     const { language, t, setLanguageUpdatePreference } =
         useLanguage();
-    const { sessions, isLoadingSessions, newSession } =
-        useChat();
+    const {
+        sessions,
+        isLoadingSessions,
+        newSession,
+        setRequestingFeedback,
+    } = useChat();
     const { getStateAccessToken } = useAuth();
     const { openOverlay } = useOverlay();
 
@@ -206,6 +212,25 @@ export default function Sidebar({
                         {t(
                             'chat.sidebar.links.report_issue',
                         )}
+                    </span>
+                </button>
+                <button
+                    className={styles.link}
+                    onClick={() => {
+                        setRequestingFeedback(
+                            PromptSource.USER_TRIGGERED,
+                        );
+                    }}
+                >
+                    <ThumbsUp className={styles.icon} />
+                    <span
+                        className={`${
+                            !isSidebarOpen
+                                ? styles.sidebarItemClose
+                                : styles.sidebarItemOpen
+                        }`}
+                    >
+                        {t('chat.sidebar.links.feedback')}
                     </span>
                 </button>
             </div>

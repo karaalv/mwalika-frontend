@@ -10,6 +10,7 @@ export const enChatTranslations = {
     'chat.sidebar.chats': 'Chats',
     'chat.sidebar.links.privacy': 'Privacy',
     'chat.sidebar.links.report_issue': 'Report an Issue',
+    'chat.sidebar.links.feedback': 'Give Feedback',
     'chat.sidebar.empty': 'No chats available',
     'chat.sidebar.session_options.rename': 'Rename',
     'chat.sidebar.session_options.delete': 'Delete',

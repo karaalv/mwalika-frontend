@@ -20,14 +20,16 @@ import { PanelLeft, ArrowDown } from 'lucide-react';
 import styles from '@styles/chat/components/chat-area.module.css';
 
 // Components
+import ChatMessages from '@components/chat/ChatMessages';
 import ChatInput from '@components/chat/ChatInput';
-import ErrorModal from '@components/chat/ErrorModal';
+import ErrorModal from '@components/chat/modals/ErrorModal';
 import AgentThinking from '@components/chat/AgentThinking';
+import FeedbackModal from '@components/chat/modals/FeedbackModal';
 
 // Context
 import { useChat } from '@/context/ChatContext';
 import { useNotification } from '@/context/NotificationContext';
-import ChatMessages from './ChatMessages';
+import { useSiteLayout } from '@/context/LayoutContext';
 
 // Component props
 interface ChatAreaProps {
@@ -40,8 +42,13 @@ export default function ChatArea({
     setIsSidebarOpen,
 }: ChatAreaProps) {
     // - Context -
-    const { activeMemory, activeSession } = useChat();
+    const {
+        activeMemory,
+        activeSession,
+        requestingFeedback,
+    } = useChat();
     const { uiError } = useNotification();
+    const { isMobile } = useSiteLayout();
 
     // - State -
     const chatContentRef = useRef<HTMLDivElement>(null);
@@ -114,7 +121,6 @@ export default function ChatArea({
         }
     }, [currentMessageLength]);
 
-    // Scroll to bottom on session change
     useLayoutEffect(() => {
         const chatContentEl = chatContentRef.current;
         if (!chatContentEl) return;
@@ -148,6 +154,21 @@ export default function ChatArea({
         };
     }, []);
 
+    // Close sidebar on mobile when feedback
+    // is requested
+    useEffect(() => {
+        if (isMobile && requestingFeedback) {
+            setIsSidebarOpen(false);
+        }
+    }, [requestingFeedback, isMobile]);
+
+    // Scroll to bottom when feedback is requested
+    useEffect(() => {
+        if (requestingFeedback) {
+            scrollToBottom(true);
+        }
+    }, [requestingFeedback]);
+
     return (
         <div className={styles.container}>
             <div className={styles.chatHeader}>
@@ -173,9 +194,9 @@ export default function ChatArea({
                 ref={chatContentRef}
                 onScroll={handleScroll}
             >
-                {/* Chat messages will go here */}
                 <ChatMessages messages={activeMemory} />
                 <AgentThinking />
+                {requestingFeedback && <FeedbackModal />}
                 <div ref={messagesEndRef} />
             </div>
             <div className={styles.chatInput}>

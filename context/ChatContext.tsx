@@ -27,6 +27,7 @@ import {
     MemoryContentTypes,
 } from '@/types/services/agent/memory.types';
 import { StreamItem } from '@/types/services/agent/stream.types';
+import { PromptSource } from '@/types/services/users/feedback';
 
 // Services
 import {
@@ -98,6 +99,11 @@ interface ChatContextType {
         sessionId: string,
         message: string,
     ) => void;
+    // Feedback related state
+    requestingFeedback: PromptSource | null;
+    setRequestingFeedback: React.Dispatch<
+        React.SetStateAction<PromptSource | null>
+    >;
 }
 
 const ChatContext = createContext<
@@ -127,6 +133,8 @@ export default function ChatProvider({
     >([]);
     const [activeSession, setActiveSession] =
         useState<AgentSession | null>(null);
+    const [requestingFeedback, setRequestingFeedback] =
+        useState<PromptSource | null>(null);
 
     // - Session storage state -
     const [sessionStore, setSessionStore] = useState<
@@ -574,6 +582,8 @@ export default function ChatProvider({
             deleteSession,
             updateSessionName,
             activeMemory,
+            requestingFeedback,
+            setRequestingFeedback,
         }),
         [
             isAgentThinking,
@@ -583,6 +593,7 @@ export default function ChatProvider({
             activeSession,
             activeMemory,
             isAgentResponding,
+            requestingFeedback,
         ],
     );
 

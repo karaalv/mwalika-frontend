@@ -13,6 +13,7 @@ import { enNotFoundTranslations } from './en/not-found';
 import { enPrivacyTranslations } from './en/privacy';
 import { enChatTranslations } from './en/chat';
 import { enOverlayTranslations } from './en/overlay';
+import { enFeedbackTranslations } from './en/feedback';
 
 // Swahili translations
 import { swNavbarTranslations } from './sw/navbar';
@@ -23,6 +24,7 @@ import { swNotFoundTranslations } from './sw/not-found';
 import { swPrivacyTranslations } from './sw/privacy';
 import { swChatTranslations } from './sw/chat';
 import { swOverlayTranslations } from './sw/overlay';
+import { swFeedbackTranslations } from './sw/feedback';
 
 export const enDictionary: Record<string, string> = {
     ...enNavbarTranslations,
@@ -33,6 +35,7 @@ export const enDictionary: Record<string, string> = {
     ...enPrivacyTranslations,
     ...enChatTranslations,
     ...enOverlayTranslations,
+    ...enFeedbackTranslations,
 };
 
 export const swDictionary: Record<string, string> = {
@@ -44,4 +47,5 @@ export const swDictionary: Record<string, string> = {
     ...swPrivacyTranslations,
     ...swChatTranslations,
     ...swOverlayTranslations,
+    ...swFeedbackTranslations,
 };

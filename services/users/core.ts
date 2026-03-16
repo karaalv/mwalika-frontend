@@ -1,3 +1,4 @@
+'use server';
 /**
  * @description: This file contains Core user service
  * interactions with the backend API, providing functions

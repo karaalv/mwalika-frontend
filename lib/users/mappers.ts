@@ -8,6 +8,8 @@
 import { UserLanguagePreference } from '@/types/services/users/core';
 import { Language } from '@/context/LanguageContext';
 
+// --- Language enum mappers ---
+
 export function mapLanguageToUserPreference(
     language: Language,
 ): UserLanguagePreference {

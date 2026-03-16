@@ -44,6 +44,7 @@ import {
     SeverityLevel,
     SentryExtras,
 } from '@/types/lib/observability/sentry/core.types';
+import { PromptSource } from '@/types/services/users/feedback';
 
 // Lib
 import { validateStreamItem } from '@/lib/chat/validation';
@@ -92,6 +93,7 @@ export default function SocketProvider({
         setAgentThinkingTitles,
         fetchAndAddSessionById,
         addAgentStreamItemToMemory,
+        setRequestingFeedback,
     } = useChat();
 
     // - State -
@@ -323,6 +325,10 @@ export default function SocketProvider({
         [addAgentStreamItemToMemory],
     );
 
+    const handleRequestFeedback = useCallback(() => {
+        setRequestingFeedback(PromptSource.AGENT);
+    }, [setRequestingFeedback]);
+
     // - Effects -
 
     // --- Connection ---
@@ -476,6 +482,10 @@ export default function SocketProvider({
                                 handleSetSessionId(
                                     data.message.payload,
                                 );
+                                break;
+                            case WebSocketMessageType.REQUEST_FEEDBACK:
+                                // Handle feedback request from the server
+                                handleRequestFeedback();
                                 break;
                             default: {
                                 // Log unknown message types for observability
